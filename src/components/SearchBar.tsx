@@ -1,13 +1,14 @@
 import * as React from "react";
+import { SearchBarProps } from "../interfaces/interfaces";
 
-const SearchBar = () => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeholderText }) => {
   return (
     <div className="search">
       <i className="fa fa-search search__icon"></i>
       <input
         type="text"
         className="search__input"
-        placeholder="Search for a country"
+        placeholder={placeholderText}
       />
     </div>
   );
