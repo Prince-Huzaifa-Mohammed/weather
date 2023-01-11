@@ -10,10 +10,6 @@ const SelectBox: React.FC<SelectBoxProps> = ({ regions }) => {
       {regions.map((region) => (
         <option value={region}>{region}</option>
       ))}
-      {/* <option value="">America</option>
-      <option value="">Asia</option>
-      <option value="">Europe</option>
-      <option value="">Oceania</option> */}
     </select>
   );
 };

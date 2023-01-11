@@ -86,6 +86,11 @@ p {
   }
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* BUTTONS */
 button {
   border: none;
@@ -320,11 +325,13 @@ header {
 }
 
 .card__image {
-  height: 160px;
-  background-color: brown;
+  /* height: 20rem; */
+  /* background-size: cover; */
 }
 
 .card__image img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
   width: 100%;
 }
 
