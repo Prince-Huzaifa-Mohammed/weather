@@ -8,7 +8,7 @@ const Card: React.FC<CardProps> = ({ country }) => {
         <img src={country.flag} alt={country.name} />
       </div>
       <div className="card__body">
-        <a href="http://google.com">
+        <a href="https://restcountries.com/v2/name/{country.name}">
           <h3>{country.name}</h3>
         </a>
         <div className="country__info">

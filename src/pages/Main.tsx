@@ -24,8 +24,6 @@ const Main = () => {
     fetchData();
   }, []);
 
-  console.log(data);
-
   return (
     <main className="container">
       <SearchAndFilterBars />

@@ -68,3 +68,8 @@ export interface CardListProps {
 export interface CardProps {
   country: Country;
 }
+
+export interface NavBarProps {
+  onToggle: () => void;
+  theme: boolean;
+}
