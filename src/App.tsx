@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Country from "./pages/Country";
+// import Country from "./pages/Country";
+import CountryDetails from "./pages/Country";
 import Main from "./pages/Main";
 import "./index.css";
 import Navbar from "./components/Navbar";
@@ -28,7 +29,7 @@ const App: React.FC = () => {
           <Navbar onToggle={toggleTheme} theme={theme} />
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/country/:id" element={<Country />} />
+            <Route path="/country/:name" element={<CountryDetails />} />
           </Routes>
         </Router>
       </SearchContext.Provider>

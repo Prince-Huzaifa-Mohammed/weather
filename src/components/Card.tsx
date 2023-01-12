@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { CardProps } from "../interfaces/interfaces";
 
 const Card: React.FC<CardProps> = ({ country }) => {
@@ -8,9 +9,9 @@ const Card: React.FC<CardProps> = ({ country }) => {
         <img src={country.flag} alt={country.name} />
       </div>
       <div className="card__body">
-        <a href="https://restcountries.com/v2/name/{country.name}">
+        <Link to={`/country/${country.name}`}>
           <h3>{country.name}</h3>
-        </a>
+        </Link>
         <div className="country__info">
           <span className="label">Population: </span>
           <span className="content">{country.population}</span>

@@ -487,3 +487,11 @@ header {
     margin-bottom: 1.5rem;
   }
 }
+
+.country__info .label {
+  margin-right: 0.8rem;
+}
+
+.country__info .badge {
+  margin-right: 0.6rem;
+}
