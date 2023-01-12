@@ -73,3 +73,14 @@ export interface NavBarProps {
   onToggle: () => void;
   theme: boolean;
 }
+
+export interface SearchAndFilterBarsProps {
+  onSearch: () => void;
+}
+
+export interface SearchContextInterface {
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  selectText: string;
+  setSelectText: React.Dispatch<React.SetStateAction<string>>;
+}

@@ -40,6 +40,10 @@ body,
   font-weight: 300;
 }
 
+.App {
+  min-height: 100vh;
+}
+
 /* H1 */
 h1 {
   font-size: 2.4rem;
@@ -360,6 +364,7 @@ header {
 /* COUNTRY */
 .country__section {
   margin-top: 8rem;
+  margin-bottom: 5rem;
 }
 
 .badge {

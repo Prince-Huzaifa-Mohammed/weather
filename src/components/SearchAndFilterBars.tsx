@@ -2,7 +2,7 @@ import * as React from "react";
 import SearchBar from "./SearchBar";
 import SelectBox from "./SelectBox";
 
-const SearchAndFilterBars = () => {
+const SearchAndFilterBars: React.FC = () => {
   const regions: string[] = ["Africa", "America", "Asia", "Europe", "Oceania"];
   return (
     <div className="search-and-filter-bars">
