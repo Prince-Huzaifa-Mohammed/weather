@@ -8,8 +8,10 @@ import Navbar from "./components/Navbar";
 import { useLocalStorage } from "usehooks-ts";
 import { createContext } from "react";
 import { SearchContextInterface } from "./interfaces/interfaces";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const SearchContext = createContext<SearchContextInterface | null>(null);
+const queryClient = new QueryClient();
 
 const App: React.FC = () => {
   const [theme, setTheme] = useLocalStorage("light", true);
@@ -25,13 +27,15 @@ const App: React.FC = () => {
       <SearchContext.Provider
         value={{ searchText, setSearchText, selectText, setSelectText }}
       >
-        <Router>
-          <Navbar onToggle={toggleTheme} theme={theme} />
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/country/:name" element={<CountryDetails />} />
-          </Routes>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Navbar onToggle={toggleTheme} theme={theme} />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/country/:name" element={<CountryDetails />} />
+            </Routes>
+          </Router>
+        </QueryClientProvider>
       </SearchContext.Provider>
     </div>
   );

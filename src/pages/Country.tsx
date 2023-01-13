@@ -1,22 +1,47 @@
 import axios from "axios";
 import * as React from "react";
+import { useState } from "react";
+import { BallTriangle } from "react-loader-spinner";
 import { Link, useParams } from "react-router-dom";
 import { Country } from "../interfaces/interfaces";
 
 const CountryDetails = () => {
   const { name } = useParams();
   const [data, setData] = React.useState<Country[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   React.useEffect(() => {
     axios
       .get<Country[]>(`https://restcountries.com/v2/name/${name}`)
       .then((response) => {
         setData(response.data);
-        console.log(response.data[0].alpha2Code);
-        console.log(data);
+        setLoading(false);
       })
-      .catch((e) => console.log(e.message));
+      .catch((e) => {
+        setError("Something went wrong. Please try again later!");
+        setLoading(false);
+      });
   }, []);
+
+  // if (loading) {
+  //   return (
+  //     <div className="loading">
+  //       <BallTriangle
+  //         height={150}
+  //         width={150}
+  //         radius={5}
+  //         color="#4fa94d"
+  //         ariaLabel="ball-triangle-loading"
+  //         visible={true}
+  //       />
+  //     </div>
+  //   );
+  // }
+
+  // if (error) {
+  //   return <h3 className="loading">{error}</h3>;
+  // }
 
   return (
     <main className="country__section container">
@@ -26,6 +51,21 @@ const CountryDetails = () => {
           back
         </button>
       </Link>
+
+      {error && <h3 className="loading">{error}</h3>}
+
+      {loading && (
+        <div className="loading">
+          <BallTriangle
+            height={150}
+            width={150}
+            radius={5}
+            color="#4fa94d"
+            ariaLabel="ball-triangle-loading"
+            visible={true}
+          />
+        </div>
+      )}
 
       {data && (
         <div className="country__content">
@@ -80,12 +120,14 @@ const CountryDetails = () => {
             </div>
 
             <div className="borders">
-              <div className="country__info">
-                <span className="label">Border Countries: </span>
-                {data![0].borders.map((border) => (
-                  <span className="badge">{border}</span>
-                ))}
-              </div>
+              {data[0].borders && (
+                <div className="country__info">
+                  <span className="label">Border Countries: </span>
+                  {data![0].borders.map((border) => (
+                    <span className="badge">{border}</span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

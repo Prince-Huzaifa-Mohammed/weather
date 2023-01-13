@@ -495,3 +495,9 @@ header {
 .country__info .badge {
   margin-right: 0.6rem;
 }
+
+.loading {
+  display: grid;
+  place-items: center;
+  margin-top: 20rem;
+}
