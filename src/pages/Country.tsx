@@ -105,7 +105,9 @@ const CountryDetails = () => {
                 <div className="country__info">
                   <span className="label">Border Countries: </span>
                   {data![0].borders.map((border) => (
-                    <span className="badge">{border}</span>
+                    <span className="badge" key={border}>
+                      {border}
+                    </span>
                   ))}
                 </div>
               )}

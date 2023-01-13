@@ -421,12 +421,12 @@ header {
 }
 
 .country__name {
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (max-width: 1377px) {
   .country__name {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
   }
 }
 
@@ -471,12 +471,12 @@ header {
 }
 
 .borders {
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 
 @media (max-width: 1377px) {
   .borders {
-    margin-top: 2rem;
+    margin-top: 1.8rem;
   }
 }
 
