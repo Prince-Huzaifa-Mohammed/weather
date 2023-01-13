@@ -24,25 +24,6 @@ const CountryDetails = () => {
       });
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <div className="loading">
-  //       <BallTriangle
-  //         height={150}
-  //         width={150}
-  //         radius={5}
-  //         color="#4fa94d"
-  //         ariaLabel="ball-triangle-loading"
-  //         visible={true}
-  //       />
-  //     </div>
-  //   );
-  // }
-
-  // if (error) {
-  //   return <h3 className="loading">{error}</h3>;
-  // }
-
   return (
     <main className="country__section container">
       <Link to="/">

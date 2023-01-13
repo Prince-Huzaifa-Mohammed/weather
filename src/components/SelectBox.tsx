@@ -13,7 +13,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({ regions }) => {
       id=""
       onChange={(e) => searchContext?.setSelectText(e.target.value)}
     >
-      <option value="" selected disabled>
+      <option value="" selected>
         Filter by Region
       </option>
       {regions.map((region) => (
