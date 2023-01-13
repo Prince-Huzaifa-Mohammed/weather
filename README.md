@@ -1,46 +1,29 @@
-# Getting Started with Create React App
+# Countries Rest API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The countries rest API is an extensive API that provides deailed information about the demographics of various countries. This API can be integrated into varoius projects to provide data rich services.
 
-## Available Scripts
+## About The Project
 
-In the project directory, you can run:
+This project marks the ending of the phase 3 of the graduate training at Amalitech. This project is therefore submited in partial fulfilment for the conditions necessary for the completion of this course.
 
-### `npm start`
+## Basic Functionality Of This App
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This app simply provides users with a simple, minimal and clean interface to access demographic information about various countries. This app provides the following functionality
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. A search field based on country name to quickly have access to a country
+2. A filter bar to filter countries according to their regions. Eg. Africa, Oceania etc.
+3. A link to navigate to the details page of a specific country. The details page provides users with more information about countries that have been clicked on.
+4. A light and dark theme to provide comfort to the eye of the user based on the time of day.
+5. A hyper responsive app that provide a clean interface for various screen sizes.
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The following Libraries, frameworks and packages were used
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. React as the frontend library to build this app
+2. React router dom to provide navigation to various parts of this app
+3. Axios to interact with the Countries Rest API to fetch data on countries
+4. Font Awesome Icons
+5. UseState, UseEffect and Context Provider to manage the state of this application
+6. Usehooks to implement the dark and light mode themes
+7. React Loader Spinner to manage the loading states when data is being fetched.
