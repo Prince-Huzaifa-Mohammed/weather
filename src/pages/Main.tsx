@@ -2,9 +2,10 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import CardList from "../components/CardList";
 import SearchAndFilterBars from "../components/SearchAndFilterBars";
-import axios from "axios";
+// import axios from "axios";
 import { Country } from "../interfaces/interfaces";
 import { BallTriangle } from "react-loader-spinner";
+import { getData } from "../utils/utils";
 
 const Main = () => {
   const url: string = "https://restcountries.com/v2/all";
@@ -13,20 +14,30 @@ const Main = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get<Country[]>(url);
-
-        setData(response.data);
-        setLoading(false);
-      } catch (e) {
-        setError("Unable to fetch data. Please try again later");
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    try {
+      loadCountries();
+    } catch (e) {
+      setError("Unable to fetch data. Please try again later");
+      setLoading(false);
+    }
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get<Country[]>(url);
+    //     setData(response.data);
+    //     setLoading(false);
+    //   } catch (e) {
+    //     setError("Unable to fetch data. Please try again later");
+    //     setLoading(false);
+    //   }
+    // };
+    // fetchData();
   }, []);
+
+  const loadCountries = async () => {
+    const countries = await getData(url);
+    setData(countries);
+    setLoading(false);
+  };
 
   return (
     <main className="container">

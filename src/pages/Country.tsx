@@ -1,9 +1,10 @@
-import axios from "axios";
+// import axios from "axios";
 import * as React from "react";
 import { useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
 import { Link, useParams } from "react-router-dom";
 import { Country } from "../interfaces/interfaces";
+import { getData } from "../utils/utils";
 
 const CountryDetails = () => {
   const { name } = useParams();
@@ -11,18 +12,32 @@ const CountryDetails = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const url = `https://restcountries.com/v2/name/${name}`;
+
   React.useEffect(() => {
-    axios
-      .get<Country[]>(`https://restcountries.com/v2/name/${name}`)
-      .then((response) => {
-        setData(response.data);
-        setLoading(false);
-      })
-      .catch((e) => {
-        setError("Something went wrong. Please try again later!");
-        setLoading(false);
-      });
+    try {
+      getCountry();
+    } catch (e) {
+      setError("Something went wrong. Please try again later!");
+      setLoading(false);
+    }
+    // axios
+    //   .get<Country[]>(`https://restcountries.com/v2/name/${name}`)
+    //   .then((response) => {
+    //     setData(response.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     setError("Something went wrong. Please try again later!");
+    //     setLoading(false);
+    //   });
   }, []);
+
+  const getCountry = async () => {
+    const country = await getData(url);
+    setData(country);
+    setLoading(false);
+  };
 
   return (
     <main className="country__section container">
