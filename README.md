@@ -27,3 +27,8 @@ The following Libraries, frameworks and packages were used
 5. UseState, UseEffect and Context Provider to manage the state of this application
 6. Usehooks to implement the dark and light mode themes
 7. React Loader Spinner to manage the loading states when data is being fetched.
+
+## How to Use this App
+
+The access this app please visit https://restcountriesapifinal.netlify.app
+Enjoy!!
