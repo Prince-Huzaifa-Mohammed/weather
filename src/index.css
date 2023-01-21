@@ -106,7 +106,7 @@ button {
   color: inherit;
   background-color: var(--secondary);
   cursor: pointer;
-  box-shadow: var(--box-shadow-2);
+  /* box-shadow: var(--box-shadow-2); */
   border-radius: 5px;
 }
 
@@ -239,7 +239,7 @@ header {
 }
 
 .search input::placeholder {
-  color: var(--text);
+  color: var(--search-icon);
 }
 
 .search__icon {
@@ -296,7 +296,7 @@ header {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-content: space-between;
-  column-gap: 4rem;
+  column-gap: 6rem;
   row-gap: 8rem;
   margin-top: 5rem;
 }
@@ -325,6 +325,7 @@ header {
   .countries-grid {
     grid-template-columns: repeat(1, 1fr);
     row-gap: 3rem;
+    place-items: center;
   }
 }
 
@@ -336,9 +337,10 @@ header {
   background-color: var(--secondary);
 }
 
-.card__image {
-  /* height: 20rem; */
-  /* background-size: cover; */
+@media (max-width: 575px) {
+  .card {
+    width: 26.4rem;
+  }
 }
 
 .card__image img {
@@ -352,12 +354,28 @@ header {
   background-color: var(--secondary);
 }
 
-.country__info {
-  font-size: 1.4rem;
-  display: flex;
-  flex-wrap: wrap;
+.card__body .country__info {
   margin-bottom: 0.6rem;
 }
+
+.country__info {
+  font-size: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 1377px) {
+  .country__info {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* @media (max-width: 768px) {
+  .country__info {
+    margin-bottom: 1.5rem;
+  }
+} */
 
 .country__info .label {
   font-weight: 600;
@@ -372,7 +390,7 @@ header {
 .badge {
   padding: 0.5rem 3rem;
   background-color: var(--secondary);
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: var(--box-shadow-2);
 }
 
@@ -386,12 +404,19 @@ header {
   margin-top: 8rem;
   display: flex;
   align-items: center;
-  gap: 8rem;
+  gap: 14.6rem;
+}
+
+@media (max-width: 1377px) {
+  .country__content {
+    gap: 6rem;
+  }
 }
 
 @media (max-width: 1024px) {
   .country__content {
     gap: 3rem;
+    flex-direction: column;
   }
 }
 
@@ -406,9 +431,23 @@ header {
 }
 
 .country__flag {
-  flex: 1.2;
+  flex-basis: 56rem;
+  height: 40.1rem;
   border-radius: 5px;
   overflow: hidden;
+}
+
+@media (max-width: 1377px) {
+  .country__flag {
+    flex-basis: 45rem;
+    height: 32rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .country__flag {
+    flex-basis: 100%;
+  }
 }
 
 .country__flag img {
@@ -426,7 +465,13 @@ header {
 
 @media (max-width: 1377px) {
   .country__name {
-    margin-bottom: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .country__name {
+    margin-bottom: 0.8rem;
   }
 }
 
@@ -435,11 +480,18 @@ header {
 
   display: flex;
   flex-direction: column;
+  font-size: 1.6rem;
 }
 
 @media (max-width: 1377px) {
   .country__bio {
     flex: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .country__bio {
+    width: 100%;
   }
 }
 
@@ -474,6 +526,52 @@ header {
   margin-top: 3rem;
 }
 
+.border__info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .border__info {
+    grid-template-columns: 1fr;
+  }
+}
+
+.border__info .label {
+  font-size: 1.6rem;
+  padding-top: 0.2rem;
+  font-weight: 600;
+}
+
+@media (max-width: 1377px) {
+  .border__info .label {
+    flex-basis: 30rem;
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .border__info .label {
+    /* flex-basis: 0; */
+    margin-bottom: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.border__countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 575px) {
+  .border__countries {
+    font-size: 1.2rem;
+  }
+}
+
 @media (max-width: 1377px) {
   .borders {
     margin-top: 1.8rem;
@@ -495,12 +593,19 @@ header {
 
   .borders .label {
     display: block;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
   }
 }
 
 .country__info .label {
   margin-right: 0.8rem;
+}
+
+@media (max-width: 575px) {
+  .country__info .label,
+  .country__info .content {
+    font-size: 1.4rem;
+  }
 }
 
 .country__info .badge {
@@ -509,7 +614,26 @@ header {
 }
 
 .loading {
+  position: absolute;
+  top: 30%;
+  right: 45%;
+}
+
+/* .notfound {
+  text-align: center;
+  margin-top: 5rem;
+  font-size: 2.4rem;
+} */
+
+.loader-and-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
   display: grid;
   place-items: center;
-  margin-top: 20rem;
+  /* z-index: -5; */
+  pointer-events: none;
 }

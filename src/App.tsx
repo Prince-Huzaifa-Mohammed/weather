@@ -1,20 +1,12 @@
-import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Country from "./pages/Country";
-import CountryDetails from "./pages/Country";
-import Main from "./pages/Main";
-import "./index.css";
 import Navbar from "./components/Navbar";
+import AllCountries from "./pages/AllCountries";
+import SingleCountry from "./pages/SingleCountry";
 import { useLocalStorage } from "usehooks-ts";
-import { createContext } from "react";
-import { SearchContextInterface } from "./interfaces/interfaces";
+import "./index.css";
 
-export const SearchContext = createContext<SearchContextInterface | null>(null);
-
-const App: React.FC = () => {
+const App = () => {
   const [theme, setTheme] = useLocalStorage("light", true);
-  const [searchText, setSearchText] = useState("");
-  const [selectText, setSelectText] = useState("");
 
   const toggleTheme = () => {
     setTheme((prevValue: boolean) => !prevValue);
@@ -22,17 +14,13 @@ const App: React.FC = () => {
 
   return (
     <div className="App" data-theme={theme ? "light" : "dark"}>
-      <SearchContext.Provider
-        value={{ searchText, setSearchText, selectText, setSelectText }}
-      >
-        <Router>
-          <Navbar onToggle={toggleTheme} theme={theme} />
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/country/:name" element={<CountryDetails />} />
-          </Routes>
-        </Router>
-      </SearchContext.Provider>
+      <Router>
+        <Navbar onToggle={toggleTheme} theme={theme} />
+        <Routes>
+          <Route path="/" element={<AllCountries />} />
+          <Route path="/country/:name" element={<SingleCountry />} />
+        </Routes>
+      </Router>
     </div>
   );
 };

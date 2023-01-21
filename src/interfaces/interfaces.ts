@@ -61,8 +61,13 @@ export interface Country {
   independent: boolean;
 }
 
-export interface CardListProps {
+export interface AllCountriesProps {
   countries: Country[];
+}
+
+export interface CountryType {
+  countries: Country[];
+  setCountries: React.Dispatch<React.SetStateAction<never[]>>;
 }
 
 export interface CardProps {
@@ -74,13 +79,17 @@ export interface NavBarProps {
   theme: boolean;
 }
 
-export interface SearchAndFilterBarsProps {
-  onSearch: () => void;
+export interface CountryProps {
+  country: Country;
 }
 
-export interface SearchContextInterface {
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  selectText: string;
-  setSelectText: React.Dispatch<React.SetStateAction<string>>;
+export interface AppContextInterface {
+  countries: Country[];
+  setCountries: React.Dispatch<
+    React.SetStateAction<AppContextInterface | null>
+  >;
 }
+
+export type PropsChildren = {
+  children: string | JSX.Element | JSX.Element[] | (() => JSX.Element);
+};

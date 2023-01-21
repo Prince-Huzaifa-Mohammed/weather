@@ -1,13 +1,14 @@
-import * as React from "react";
+import React from "react";
 import { NavBarProps } from "../interfaces/interfaces";
 
-const Navbar: React.FC<NavBarProps> = ({ onToggle, theme }) => {
+const Navbar = ({ theme, onToggle }: NavBarProps) => {
   return (
     <div className="header-box">
       <header className="container">
         <div className="logo">
           <h1>Where in the world?</h1>
         </div>
+
         <div className="dark-mode" onClick={onToggle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

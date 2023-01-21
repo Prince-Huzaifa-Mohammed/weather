@@ -1,8 +1,8 @@
-import * as React from "react";
 import { Link } from "react-router-dom";
 import { CardProps } from "../interfaces/interfaces";
+import "../index.css";
 
-const Card: React.FC<CardProps> = ({ country }) => {
+const Card = ({ country }: CardProps) => {
   return (
     <div className="card">
       <div className="card__image">
@@ -14,7 +14,7 @@ const Card: React.FC<CardProps> = ({ country }) => {
         </Link>
         <div className="country__info">
           <span className="label">Population: </span>
-          <span className="content">{country.population}</span>
+          <span className="content">{country.population.toLocaleString()}</span>
         </div>
         <div className="country__info">
           <span className="label">Region: </span>
