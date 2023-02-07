@@ -5,6 +5,7 @@ import theme from "./theme/theme";
 import GlobalStyles from "./components/styled/GlobalStyles";
 import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </Router>
     </ThemeProvider>

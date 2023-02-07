@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { MdRemoveRedEye } from "react-icons/md";
+import { Link } from "react-router-dom";
 import MainLogo from "../components/MainLogo";
-import Select from "../components/Select";
 import { Button } from "../components/styled/Button";
 import { Content } from "../components/styled/Content";
 import { Flex } from "../components/styled/Flex";
+import { Image } from "../components/styled/Image";
 import { InputField } from "../components/styled/InputField";
 import { InputGroup } from "../components/styled/InputGroup";
 import { Label } from "../components/styled/Label";
@@ -11,8 +13,19 @@ import { PrimaryBox } from "../components/styled/PrimaryBox";
 import { SecondaryBox } from "../components/styled/SecondaryBox";
 import { Shell } from "../components/styled/Shell";
 import { SmallContainer } from "../components/styled/SmallContainer";
+import { StyledSelect } from "../components/styled/StyledSelect";
 
 const Register: React.FC = () => {
+  const [visible, setVisible] = useState(false);
+  const [country, setCountry] = useState("Ghana");
+
+  const toggleVisibility = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (visible) setVisible(false);
+    else setVisible(true);
+  };
+
   return (
     <Shell>
       <SecondaryBox>
@@ -33,7 +46,18 @@ const Register: React.FC = () => {
 
           <InputGroup>
             <Label>Country</Label>
-            <Select />
+            <StyledSelect>
+              <Image src={`./assets/${country}.svg`} width="10%" />
+              <div></div>
+              <select onChange={(e) => setCountry(e.target.value)}>
+                <option value="Germany">Germany</option>
+                <option value="Ghana" selected>
+                  Ghana
+                </option>
+                <option value="Uganda">Uganda</option>
+              </select>
+            </StyledSelect>
+            {/* <Select /> */}
           </InputGroup>
 
           <InputGroup>
@@ -46,8 +70,11 @@ const Register: React.FC = () => {
           <InputGroup>
             <Label>Password</Label>
             <InputField>
-              <input type="password" placeholder="* * * * * * * * * * *" />
-              <div>
+              <input
+                type={visible ? "text" : "password"}
+                placeholder="* * * * * * * * * * *"
+              />
+              <div onClick={toggleVisibility}>
                 <MdRemoveRedEye />
               </div>
             </InputField>
@@ -63,7 +90,7 @@ const Register: React.FC = () => {
           </Flex>
 
           <Flex>
-            <Button>Sign up</Button> <a href="/login">Back to login page</a>
+            <Button>Sign up</Button> <Link to="/login">Back to login page</Link>
           </Flex>
         </SmallContainer>
       </Content>

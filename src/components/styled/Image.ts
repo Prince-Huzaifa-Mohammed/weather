@@ -6,4 +6,9 @@ type Props = {
 
 export const Image = styled.img<Props>`
   width: ${({ width }) => width};
+  transition: all 0.4s ease;
+
+  /* &:hover {
+    transform: scale(1.2);
+  } */
 `;

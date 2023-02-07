@@ -14,8 +14,18 @@ import { MdRemoveRedEye } from "react-icons/md";
 import { ButtonOutlined } from "../components/styled/ButtonOutlined";
 import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
+import { useState } from "react";
 
 const LoginPage: React.FC = () => {
+  const [visible, setVisible] = useState(false);
+
+  const toggleVisibility = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (visible) setVisible(false);
+    else setVisible(true);
+  };
+
   return (
     <div>
       <Shell>
@@ -42,9 +52,12 @@ const LoginPage: React.FC = () => {
             <InputGroup>
               <Label>Password</Label>
               <InputField>
-                <input type="password" placeholder="* * * * * * * * * * *" />
+                <input
+                  type={visible ? "text" : "password"}
+                  placeholder="* * * * * * * * * * *"
+                />
                 {/* <Input type="email" placeholder="prince@amalitech.org" /> */}
-                <div>
+                <div onClick={toggleVisibility}>
                   <MdRemoveRedEye />
                 </div>
               </InputField>

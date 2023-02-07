@@ -13,7 +13,11 @@ export const SmallContainer = styled.div`
   margin: 0 auto;
 
   h2 {
-    margin-bottom: -2.5rem;
+    margin-bottom: -2.2rem;
     font-weight: 500;
+  }
+
+  h3 {
+    margin-top: 1.8rem;
   }
 `;

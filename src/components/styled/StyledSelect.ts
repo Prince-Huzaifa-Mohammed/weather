@@ -5,7 +5,7 @@ export const StyledSelect = styled.div`
   display: flex;
   justify-content: space-between;
   box-shadow: ${({ theme }) => theme.boxShadows.boxShadowLight};
-  padding: 1rem 2rem;
+  padding: 1rem 3rem;
   gap: 2rem;
   border-radius: ${({ theme }) => theme.borderRadius.round};
 

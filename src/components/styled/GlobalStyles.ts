@@ -49,6 +49,15 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
    }
   }
 
+  h3 {
+    font-size: 1.6rem;
+    font-weight: 400;
+
+    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
+      font-size: 1.4rem;
+   }
+  }
+
   p {
    line-height: 1.5;
   }
@@ -62,7 +71,7 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
     transition: all 0.4s ease;
 
     &:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
   }
 
