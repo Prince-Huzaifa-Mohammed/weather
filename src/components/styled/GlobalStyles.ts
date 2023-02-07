@@ -7,7 +7,7 @@ export type ThemeProps = {
 
 const GlobalStyles = createGlobalStyle<ThemeProps>`
 
-  @import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap');
 
   *, *:before, *:after {
    margin: 0;
@@ -22,18 +22,29 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
   body {
    font-family: 'Jost', sans-serif;
    color: ${({ theme }) => theme.colors.text};
-   font-size: 1.4rem;
+   font-size: 1.6rem;
 
    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
    }
   }
 
   h1 {
    font-size: 3.2rem;
+   font-family: 'Jost', sans-serif;
+   font-weight: 300;
 
    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
       font-size: 2.4rem;
+   }
+  }
+
+  h2 {
+   font-size: 2.4rem;
+   font-weight: 300;
+
+   @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
+      font-size: 2rem;
    }
   }
 
@@ -43,6 +54,15 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
 
   img {
    width: 100%;
+  }
+
+  a {
+    color: inherit;
+    transition: all 0.4s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 
 `;
