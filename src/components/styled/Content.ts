@@ -17,10 +17,6 @@ export const Content = styled.div`
   justify-content: center;
   gap: 2rem;
 
-  h1 {
-    text-align: center;
-  }
-
   @media (max-width: 1110px) {
     width: 90%;
   }

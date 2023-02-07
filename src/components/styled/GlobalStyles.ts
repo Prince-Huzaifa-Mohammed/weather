@@ -42,6 +42,7 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
   h2 {
    font-size: 2.4rem;
    font-weight: 300;
+   
 
    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
       font-size: 2rem;
@@ -62,6 +63,34 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
 
     &:hover {
       transform: scale(1.2);
+    }
+  }
+
+  /* input {
+    display: flex;
+    align-items: center;
+  } */
+
+  button {
+    border: none;
+    border-radius: ${({ theme }) => theme.borderRadius.round};
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 1.6rem 4rem;
+    transition: all 0.3s ease;
+    display: block;
+
+    &:hover {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
+      padding: 1rem 2.5rem;
+      letter-spacing: 1.5px;
     }
   }
 

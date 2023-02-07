@@ -9,8 +9,9 @@ type Props = {
   width?: string;
 };
 
-export const Button = styled.button<Props>`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
+export const ButtonOutlined = styled.button<Props>`
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.primary};
+  border: ${({ theme }) => theme.borders.primary};
   width: ${({ width }) => width || ""};
 `;
