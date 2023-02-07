@@ -5,6 +5,8 @@ export const StyledDivider = styled.p`
   text-align: center;
   border-bottom: ${({ theme }) => theme.borders.text};
   line-height: 0.1rem;
+  margin-top: 5rem;
+  margin-bottom: 2rem;
 
   span {
     padding: 0 2rem;

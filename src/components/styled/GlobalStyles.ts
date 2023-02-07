@@ -94,6 +94,17 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
     }
   }
 
+  select {
+    border: none;
+    outline: none;
+    background-color: white;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    display: block;
+  }
+
 `;
 
 export default GlobalStyles;

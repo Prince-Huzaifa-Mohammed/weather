@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SmallContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
   align-items: center;
   justify-content: center;
 

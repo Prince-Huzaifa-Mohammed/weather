@@ -29,7 +29,7 @@ const LoginPage: React.FC = () => {
             <p>Welcome back, please enter your details</p>
 
             <InputGroup>
-              <Label>Email :</Label>
+              <Label>Email</Label>
               <InputField>
                 <input type="email" placeholder="prince@amalitech.org" />
                 {/* <Input type="email" placeholder="prince@amalitech.org" /> */}
@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
             </InputGroup>
 
             <InputGroup>
-              <Label>Password :</Label>
+              <Label>Password</Label>
               <InputField>
                 <input type="password" placeholder="* * * * * * * * * * *" />
                 {/* <Input type="email" placeholder="prince@amalitech.org" /> */}

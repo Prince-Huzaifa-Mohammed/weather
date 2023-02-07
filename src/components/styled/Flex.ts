@@ -14,4 +14,8 @@ export const Flex = styled.div<Props>`
   @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
     flex-direction: column;
   }
+
+  p {
+    text-align: center;
+  }
 `;
