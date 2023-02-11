@@ -33,7 +33,7 @@ const ResetPassword: React.FC = () => {
 
           <Button width="100%">Send</Button>
 
-          <Link to="/register">
+          <Link to="/login">
             <div>
               {/* <Image src="./assets/left-arrow.png" width="20%" /> */}
               Back to login

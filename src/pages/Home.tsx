@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 import MainLogo from "../components/MainLogo";
 import { Button } from "../components/styled/Button";
 import { Content } from "../components/styled/Content";
@@ -8,6 +9,12 @@ import { SecondaryBox } from "../components/styled/SecondaryBox";
 import { Shell } from "../components/styled/Shell";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const navigateToCreateAccountPage = () => {
+    navigate("/register");
+  };
+
   return (
     <Shell>
       <SecondaryBox>
@@ -18,10 +25,12 @@ const Home = () => {
         <Image src="./assets/Weather-notification.svg" width="40%" />
         <h1>Welcome to Amalitech weather</h1>
         <Flex>
-          <Button>Create An Account</Button>
+          <Button onClick={navigateToCreateAccountPage}>
+            Create An Account
+          </Button>
           <Flex>
             <p>Already have an account?</p>
-            <a href="">Log in</a>
+            <Link to="/login">Log in</Link>
           </Flex>
         </Flex>
       </Content>

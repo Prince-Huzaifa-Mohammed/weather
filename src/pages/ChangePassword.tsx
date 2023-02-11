@@ -72,7 +72,7 @@ const ChangePassword = () => {
 
           <Button width="100%">Save</Button>
 
-          <Link to="/register">
+          <Link to="/login">
             <div>Back to login</div>
           </Link>
         </SmallContainer>
