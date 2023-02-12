@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Content = styled.div`
-  height: 60rem;
+  /* height: 60rem; */
   width: 90rem;
   max-width: 100%;
   padding: 1rem;

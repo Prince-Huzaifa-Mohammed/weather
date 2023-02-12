@@ -15,15 +15,21 @@ import { ButtonOutlined } from "../components/styled/ButtonOutlined";
 import Divider from "../components/Divider";
 import GoogleButton from "../components/GoogleButton";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   const toggleVisibility = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (visible) setVisible(false);
     else setVisible(true);
+  };
+
+  const navigateToCreateAccountPage = () => {
+    navigate("/register");
   };
 
   return (
@@ -65,7 +71,12 @@ const LoginPage: React.FC = () => {
 
             <Flex width="100%">
               <Button width="100%">Log in</Button>
-              <ButtonOutlined width="100%">Register</ButtonOutlined>
+              <ButtonOutlined
+                onClick={navigateToCreateAccountPage}
+                width="100%"
+              >
+                Register
+              </ButtonOutlined>
             </Flex>
 
             <Divider />

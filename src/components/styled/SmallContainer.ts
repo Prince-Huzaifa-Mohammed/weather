@@ -9,7 +9,7 @@ export const SmallContainer = styled.div`
 
   width: 500px;
   max-width: 100%;
-  padding: 0 20px;
+  padding: 2rem;
   margin: 0 auto;
 
   h2 {
@@ -19,5 +19,9 @@ export const SmallContainer = styled.div`
 
   h3 {
     margin-top: 1.8rem;
+  }
+
+  p {
+    text-align: center;
   }
 `;
