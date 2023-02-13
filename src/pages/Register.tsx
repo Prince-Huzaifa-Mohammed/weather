@@ -47,9 +47,13 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
 
+  // For Navigating to different pages
   const navigate = useNavigate();
+
+  // Reference to the users collection in firestore
   const colRef = collection(db, "users");
 
+  // Function to toggle password field visibility
   const toggleVisibility = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -57,6 +61,7 @@ const Register: React.FC = () => {
     else setVisible(true);
   };
 
+  // Function to register a new user using email and password. Also saves user in database
   const registerUser = async () => {
     try {
       setErrors([]);
@@ -64,7 +69,7 @@ const Register: React.FC = () => {
 
       let validationErrors: string[] = [];
 
-      // Validate input fields
+      // Validating input fields
       const fullNameValid = fullNameIsValid(fullname);
       if (!fullNameValid)
         validationErrors.push("Fullname can only contain alphabets");
@@ -82,13 +87,15 @@ const Register: React.FC = () => {
           "Password should contain at least an uppercase letter, a symbol, a number and password should have a length of 8 and above"
         );
 
+      // Check if Validation Errors array contains errors. If any, show them to user
       if (validationErrors.length > 0) {
+        // Send toast error notification
         validationErrors.map((error) => toast.error(error));
-        // toast.error("something went wrong!");
       } else {
+        // Used to control the loading state
         setRegistering(true);
 
-        // Check if account exist
+        // Check if account already exist
         const q = query(colRef, where("email", "==", email));
         const userRefIfAny = await getDocs(q);
 
@@ -102,22 +109,28 @@ const Register: React.FC = () => {
 
         console.log(res);
 
+        // If user account already exist, we redirect user to login page
         if (res.length > 0) {
-          toast.error("Heeeeee");
-          navigate("/login");
+          // Update state here with message
+          // ***************
           setRegistering(false);
+          navigate("/login");
         } else {
+          // If code gets here, it means no user exist so a fresh account shoud be created
           const userCredentials = await createUserWithEmailAndPassword(
             auth,
             email,
             password
           );
 
+          // We get user from the object return by firbase after registering
           const user = userCredentials.user;
           console.log(user);
 
+          // Updating the displayName property the new user
           updateProfile(auth.currentUser!, { displayName: fullname });
 
+          // Preparing a User Object to be saved to the firestore database. This data contains the country
           const userInfo = {
             name: fullname,
             email: user.email,
@@ -125,19 +138,28 @@ const Register: React.FC = () => {
             timestamp: serverTimestamp(),
           };
 
+          // Adding user document to the database which returns a reference to the newly saved user document
           const docRef = await addDoc(colRef, userInfo);
 
+          // Retrieving newly saved user details from the database to be used to update state
           const newUser = await getDoc(doc(db, "users", docRef.id));
           console.log(newUser.data());
-          navigate("/dashboard");
+
+          // ***** Fetch Weather data and update state
+          // ************************
+
+          // Ending the loading state
           setRegistering(false);
+
+          // We redirect to dashboard
+          navigate("/dashboard");
         }
       }
     } catch (err) {
       console.log(err);
       // setErrors(["Check your details once again"]);
       setRegistering(false);
-      navigate("/register");
+      // navigate("/register");
     }
   };
 

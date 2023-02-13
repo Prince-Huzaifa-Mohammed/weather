@@ -24,9 +24,14 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
+import { InputField } from "../components/styled/InputField";
+import { emailIsValid } from "../utils/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Country: React.FC = () => {
   const [country, setCountry] = useState("Ghana");
+  const [email, setEmail] = useState("");
   const [authing, setAuthing] = useState(false);
   const [error, setError] = useState("");
 
@@ -35,50 +40,80 @@ const Country: React.FC = () => {
   // Collection Reference
   const colRef = collection(db, "users");
 
+  // Function to register user with a google account
   const registerWithGoogle = async () => {
-    setAuthing(true);
+    // For controlling the loading state
+    setAuthing(false);
 
     try {
-      const userCredentials = await signInWithPopup(
-        auth,
-        new GoogleAuthProvider()
-      );
+      // Validate email field
+      const emailValid = emailIsValid(email);
 
-      const q = query(colRef, where("email", "==", userCredentials.user.email));
-      const userRefIfAny = await getDocs(q);
-
-      let res: object[] = [];
-      userRefIfAny.forEach((country) => {
-        res.push({
-          id: country.id,
-          ...country.data(),
-        });
-      });
-
-      if (res.length > 0) {
-        navigate("/login");
-        setAuthing(false);
+      if (!emailValid) {
+        // If email format is incorrect, show a tast error
+        toast.error("Please enter a valid email!");
       } else {
-        const userInfo = {
-          name: userCredentials.user.displayName,
-          email: userCredentials.user.email,
-          country,
-          timestamp: serverTimestamp(),
-        };
+        // If email is format is valid check if such an email has already been registered
 
-        const docRef = await addDoc(colRef, userInfo);
+        // Loading
+        setAuthing(true);
 
-        const newUser = await getDoc(doc(db, "users", docRef.id));
-        console.log(newUser.data());
+        // Constructing the query to search the database if email exist
+        const q = query(colRef, where("email", "==", email));
 
-        navigate("/dashboard");
+        // Making the request to the database
+        const userRefIfAny = await getDocs(q);
+
+        let res: object[] = [];
+        userRefIfAny.forEach((country) => {
+          res.push({
+            // id: country.id,
+            ...country.data(),
+          });
+        });
+
+        // If response contains a user object, we redirect the user to the login page cos an account exist
+        if (res.length > 0) {
+          setAuthing(false);
+          // Update state here with message to be used in toast
+          // ******
+          navigate("/login");
+        } else {
+          // If code get here, means user doesn't exist so new User should be created
+          const userCredentials = await signInWithPopup(
+            auth,
+            new GoogleAuthProvider()
+          );
+
+          // Preparing a User Object to be saved to the firestore database.
+          const userInfo = {
+            name: userCredentials.user.displayName,
+            email: userCredentials.user.email,
+            country,
+            timestamp: serverTimestamp(),
+          };
+
+          // Adding user document to the database which returns a reference to the newly saved user document
+          const docRef = await addDoc(colRef, userInfo);
+
+          // Retrieving newly saved user details from the database to be used to update state
+          const newUser = await getDoc(doc(db, "users", docRef.id));
+          console.log(newUser.data());
+
+          // ***** Fetch Weather data and update state
+          // ************************
+
+          // Ending the loading state
+          setAuthing(false);
+
+          // We redirect to dashboard
+          navigate("/dashboard");
+        }
       }
-      // const check = await colRef.where("uberId", "==",'1234567').get()
-      // console.log(userCredentials.user);
-      // console.log(userCredentials.user.uid);
     } catch (err) {
       console.log(err);
-      setError("Please sign up with a valid google account");
+      // setError("Please sign up with a valid google account");
+      toast.error("Provide a valid google account!");
     }
   };
 
@@ -125,13 +160,26 @@ const Country: React.FC = () => {
                 {/* <Select /> */}
               </InputGroup>
 
+              <InputGroup>
+                <Label>Email (Please enter a valid Gmail account)</Label>
+                <InputField>
+                  <input
+                    type="email"
+                    placeholder="prince@gmail.com"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  />
+                </InputField>
+              </InputGroup>
+
               <Button onClick={registerWithGoogle} width="100%">
-                Proceed{" "}
+                Proceed
               </Button>
             </>
           )}
         </SmallContainer>
       </Content>
+      <ToastContainer />
     </Shell>
   );
 };
