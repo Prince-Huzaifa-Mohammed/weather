@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Audio, ColorRing } from "react-loader-spinner";
+import { ColorRing } from "react-loader-spinner";
 import MainLogo from "../components/MainLogo";
 import { Content } from "../components/styled/Content";
 import { InputGroup } from "../components/styled/InputGroup";
