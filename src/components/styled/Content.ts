@@ -4,7 +4,7 @@ export const Content = styled.div`
   /* height: 60rem; */
   width: 90rem;
   max-width: 100%;
-  padding: 1rem;
+  padding: 2rem 3rem;
   background-color: ${({ theme }) => theme.colors.white};
   position: absolute;
   top: 50%;

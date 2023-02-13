@@ -9,7 +9,7 @@ export const SmallContainer = styled.div`
 
   width: 500px;
   max-width: 100%;
-  padding: 2rem;
+  /* padding: 2rem; */
   margin: 0 auto;
 
   h2 {
