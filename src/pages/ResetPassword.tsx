@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainLogo from "../components/MainLogo";
 import { Button } from "../components/styled/Button";
 import { Content } from "../components/styled/Content";
@@ -9,6 +9,8 @@ import { Shell } from "../components/styled/Shell";
 import { SmallContainer } from "../components/styled/SmallContainer";
 
 const ResetPassword: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Shell>
       <SecondaryBox>
@@ -29,7 +31,9 @@ const ResetPassword: React.FC = () => {
             able to create a new password for your account.
           </p>
 
-          <Button width="100%">Reset your password</Button>
+          <Button onClick={() => navigate("/forgot-password")} width="100%">
+            Reset your password
+          </Button>
 
           <Link to="/login">Back to login</Link>
         </SmallContainer>

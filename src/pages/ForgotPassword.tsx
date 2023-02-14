@@ -11,8 +11,37 @@ import { SecondaryBox } from "../components/styled/SecondaryBox";
 import { Shell } from "../components/styled/Shell";
 import { SmallContainer } from "../components/styled/SmallContainer";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { emailIsValid } from "../utils/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { auth } from "../config/firebase";
 
 const ResetPassword: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const resetPasswordRequest = async () => {
+    const emailValid = emailIsValid(email);
+
+    if (!emailValid) toast.error("Please enter a valid email!");
+    else {
+      setSending(true);
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          setSent(true);
+          setSending(false);
+        })
+        .catch((err) => {
+          setSending(false);
+          toast.error("This email doesn't exist in our records.");
+        });
+    }
+  };
+
   return (
     <Shell>
       <SecondaryBox>
@@ -21,30 +50,45 @@ const ResetPassword: React.FC = () => {
       <PrimaryBox></PrimaryBox>
       <Content>
         <SmallContainer>
-          <h2>Forgotten your password?</h2>
-          <h3>Don't worry, we will help you</h3>
+          {sent ? (
+            <h1>
+              A link with instructions to reset your password has been sent to
+              your email
+            </h1>
+          ) : (
+            <>
+              {sending ? (
+                <h1>Loading ....</h1>
+              ) : (
+                <>
+                  <h2>Forgotten your password?</h2>
+                  <h3>Don't worry, we will help you</h3>
 
-          <InputGroup>
-            <Label>Email</Label>
-            <InputField>
-              <input type="email" placeholder="prince@amalitech.org" />
-            </InputField>
-          </InputGroup>
+                  <InputGroup>
+                    <Label>Email</Label>
+                    <InputField>
+                      <input
+                        type="email"
+                        placeholder="prince@amalitech.org"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </InputField>
+                  </InputGroup>
 
-          <Button width="100%">Send</Button>
+                  <Button onClick={resetPasswordRequest} width="100%">
+                    Send
+                  </Button>
 
-          <Link to="/login">
-            <div>
-              {/* <Image src="./assets/left-arrow.png" width="20%" /> */}
-              Back to login
-            </div>
-            {/* <span>
-              <Image src="./assets/left-arrow.png" width="10%" />
-              <a>Back to login</a>
-            </span> */}
-          </Link>
+                  <Link to="/login">
+                    <div>Back to login</div>
+                  </Link>
+                </>
+              )}
+            </>
+          )}
         </SmallContainer>
       </Content>
+      <ToastContainer />
     </Shell>
   );
 };

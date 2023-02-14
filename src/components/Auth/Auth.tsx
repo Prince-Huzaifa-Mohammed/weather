@@ -2,6 +2,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
+import { ColorRing } from "react-loader-spinner";
 
 interface Props extends PropsWithChildren {}
 
@@ -12,18 +13,32 @@ const Auth: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    CheckAuth();
+    setLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        setLoading(false);
+      } else {
+        console.log(user);
+        navigate("/register");
+      }
+    });
+
+    return unsubscribe;
   }, [auth]);
 
-  const CheckAuth = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setLoading(false);
-    } else {
-      navigate("/");
-    }
-  });
-
-  if (loading) return <p>Loading ....</p>;
+  if (loading)
+    return (
+      <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="blocks-loading"
+        wrapperStyle={{}}
+        wrapperClass="blocks-wrapper"
+        colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
+      />
+    );
 
   return <>{children}</>;
 };

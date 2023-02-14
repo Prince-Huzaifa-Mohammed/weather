@@ -12,15 +12,21 @@ import { SmallContainer } from "../components/styled/SmallContainer";
 import { MdRemoveRedEye } from "react-icons/md";
 import { ButtonOutlined } from "../components/styled/ButtonOutlined";
 import Divider from "../components/Divider";
-import GoogleButton from "../components/GoogleButton";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { emailIsValid, passwordIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, db } from "../config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { Image } from "../components/styled/Image";
+import { ColorRing } from "react-loader-spinner";
 
 const LoginPage: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -30,6 +36,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const colRef = collection(db, "users");
 
   // Function to toggle password visibility
   const toggleVisibility = (
@@ -56,17 +63,61 @@ const LoginPage: React.FC = () => {
       SetSigningIn(true);
       setError("");
 
-      const credentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = credentials.user;
-      console.log(user);
+      try {
+        const credentials = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = credentials.user;
+        console.log(user);
 
-      // Constructing the query to get user info from the database
-      const colRef = collection(db, "users");
-      const q = query(colRef, where("email", "==", email));
+        // Constructing the query to get user info from the database
+
+        const q = query(colRef, where("email", "==", email));
+
+        // Making the request to the database
+        const userRefIfAny = await getDocs(q);
+
+        let res: object[] = [];
+        userRefIfAny.forEach((country) => {
+          res.push({
+            id: country.id,
+            ...country.data(),
+          });
+        });
+
+        if (res.length > 0) {
+          // Update state here with message to be used in toast
+          // ******
+
+          console.log(res);
+          SetSigningIn(false);
+          navigate("/dashboard");
+        } else {
+          SetSigningIn(false);
+          toast.error("Please create an account!");
+        }
+      } catch (err) {
+        SetSigningIn(false);
+        toast.error("Please try again later!");
+      }
+    }
+  };
+
+  // SIGN IN WITH GMAIL ************************************
+
+  const signInWithGoogle = async () => {
+    SetSigningIn(true);
+    setError("");
+
+    try {
+      const credentials = await signInWithPopup(auth, new GoogleAuthProvider());
+
+      const user = credentials.user;
+
+      // Constructing the query to search the database if email exist
+      const q = query(colRef, where("email", "==", user.email));
 
       // Making the request to the database
       const userRefIfAny = await getDocs(q);
@@ -74,22 +125,59 @@ const LoginPage: React.FC = () => {
       let res: object[] = [];
       userRefIfAny.forEach((country) => {
         res.push({
-          id: country.id,
+          // id: country.id,
           ...country.data(),
         });
       });
 
       if (res.length > 0) {
-        // Update state here with message to be used in toast
-        // ******
+        SetSigningIn(false);
 
-        console.log(res);
+        // Update state here ************************
+
+        // ******************************************
+
+        //console.log(user);
         navigate("/dashboard");
       } else {
-        toast.error("Please create an account!");
+        await signOut(auth);
+
+        // Update state here ********************
+
+        // **************************************
+        SetSigningIn(false);
+        console.log(user);
+        navigate("/dashboard");
       }
+    } catch (err) {
+      SetSigningIn(false);
+      toast.error("Please try again later!");
     }
   };
+
+  // *******************************************************
+
+  if (signingIn)
+    return (
+      <Shell>
+        <SecondaryBox>
+          <MainLogo />
+        </SecondaryBox>
+        <PrimaryBox>
+          <Content>
+            <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
+            />
+          </Content>
+        </PrimaryBox>
+      </Shell>
+    );
 
   return (
     <div>
@@ -142,7 +230,12 @@ const LoginPage: React.FC = () => {
 
             <Divider />
 
-            <GoogleButton />
+            <ButtonOutlined onClick={signInWithGoogle}>
+              <Image src="./assets/google.svg" width="8%" />
+              Signin with Google
+            </ButtonOutlined>
+
+            <Link to="/reset-password">Forgot Password?</Link>
           </SmallContainer>
         </Content>
         <ToastContainer />

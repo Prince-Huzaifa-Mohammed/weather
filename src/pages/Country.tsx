@@ -12,7 +12,7 @@ import { StyledSelect } from "../components/styled/StyledSelect";
 import { Image } from "../components/styled/Image";
 import { Button } from "../components/styled/Button";
 import { auth, db } from "../config/firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import {
   addDoc,
@@ -175,6 +175,8 @@ const Country: React.FC = () => {
               <Button onClick={registerWithGoogle} width="100%">
                 Proceed
               </Button>
+
+              <Link to="/login">Back to login</Link>
             </>
           )}
         </SmallContainer>

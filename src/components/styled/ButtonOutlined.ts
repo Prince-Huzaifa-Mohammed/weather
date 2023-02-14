@@ -14,4 +14,8 @@ export const ButtonOutlined = styled.button<Props>`
   color: ${({ theme }) => theme.colors.primary};
   border: ${({ theme }) => theme.borders.primary};
   width: ${({ width }) => width || ""};
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 1rem;
 `;

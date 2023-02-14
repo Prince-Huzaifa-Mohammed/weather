@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdRemoveRedEye } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainLogo from "../components/MainLogo";
 import { Button } from "../components/styled/Button";
 import { Content } from "../components/styled/Content";
@@ -15,6 +15,17 @@ import { SmallContainer } from "../components/styled/SmallContainer";
 const ChangePassword = () => {
   const [visibleNew, setVisibleNew] = useState(false);
   const [visibleConfirm, setVisibleConfirm] = useState(false);
+
+  const [verifying, setVerifying] = useState(true);
+  const [verified, setVerified] = useState(false);
+  const [changing, setChanging] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [oobCode, setOobCode] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   const toggleVisibility = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
