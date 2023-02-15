@@ -19,3 +19,7 @@ export const passwordIsValid = (password: string): boolean => {
 export const countryIsValid = (country: string): boolean => {
   return country === "Ghana" || country === "Rwanda" || country === "Germany";
 };
+
+export const confirmPasswords = (password1: string, password2: string) => {
+  return password1 === password2;
+};

@@ -80,10 +80,10 @@ const LoginPage: React.FC = () => {
         const userRefIfAny = await getDocs(q);
 
         let res: object[] = [];
-        userRefIfAny.forEach((country) => {
+        userRefIfAny.forEach((user) => {
           res.push({
-            id: country.id,
-            ...country.data(),
+            id: user.id,
+            ...user.data(),
           });
         });
 

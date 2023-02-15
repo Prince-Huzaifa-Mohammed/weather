@@ -20,7 +20,7 @@ const Auth: React.FC<Props> = (props) => {
         setLoading(false);
       } else {
         console.log(user);
-        navigate("/register");
+        navigate("/");
       }
     });
 

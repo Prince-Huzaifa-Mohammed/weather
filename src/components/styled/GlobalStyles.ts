@@ -91,10 +91,16 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
     padding: 1.6rem 4rem;
     transition: all 0.3s ease;
     display: block;
+    outline: none;
 
     &:hover {
       opacity: 0.9;
       transform: scale(0.98);
+    }
+
+    &:active {
+      outline: none;
+      transform: scale(1);
     }
 
     @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
