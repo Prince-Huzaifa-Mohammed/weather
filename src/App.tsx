@@ -20,21 +20,63 @@ const App = () => {
       <GlobalStyles />
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/country" element={<Country />} />
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <Auth>
-                <Dashboard />
+                <Home />
               </Auth>
             }
           />
+          <Route
+            path="/login"
+            element={
+              <Auth>
+                <LoginPage />
+              </Auth>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Auth>
+                <Register />
+              </Auth>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <Auth>
+                <ForgotPassword />
+              </Auth>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <Auth>
+                <ResetPassword />
+              </Auth>
+            }
+          />
+          <Route
+            path="/change-password"
+            element={
+              <Auth>
+                <ChangePassword />
+              </Auth>
+            }
+          />
+          <Route
+            path="/country"
+            element={
+              <Auth>
+                <Country />
+              </Auth>
+            }
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </ThemeProvider>

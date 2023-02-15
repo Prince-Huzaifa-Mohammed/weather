@@ -55,7 +55,25 @@ const GlobalStyles = createGlobalStyle<ThemeProps>`
 
     @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
       font-size: 1.4rem;
-   }
+    }
+  }
+
+  h4 {
+    font-size: 2rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(1);
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
+      font-size: 1.4rem;
+    }
   }
 
   p {

@@ -18,9 +18,11 @@ const Auth: React.FC<Props> = (props) => {
       if (user) {
         console.log(user);
         setLoading(false);
+        navigate("/dashboard");
       } else {
         console.log(user);
-        navigate("/");
+        setLoading(false);
+        // navigate("/");
       }
     });
 
