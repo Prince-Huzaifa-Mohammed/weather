@@ -24,6 +24,7 @@ const theme = {
   borders: {
     primary: "1px solid #fc8e3e",
     text: "1px solid #505050",
+    secondary: "1px solid #0198BA",
   },
 };
 

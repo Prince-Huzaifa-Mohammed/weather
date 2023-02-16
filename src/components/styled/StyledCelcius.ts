@@ -9,7 +9,7 @@ export const StyledCelcius = styled.span`
     padding: 0.2rem 1rem;
   }
 
-  h4 {
+  span {
     color: ${({ theme }) => theme.colors.white};
   }
 `;
