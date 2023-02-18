@@ -4,6 +4,7 @@ export const LogoContainer = styled.div`
   width: max-content;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 0 0 1rem 0;
+  box-shadow: ${({ theme }) => theme.boxShadows.boxShadowLight};
 
   gap: 1rem;
   position: relative;

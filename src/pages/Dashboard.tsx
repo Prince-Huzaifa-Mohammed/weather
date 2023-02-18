@@ -2,40 +2,33 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { ColorRing } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../components/styled/Button";
 import { auth } from "../config/firebase";
 import { Shell } from "../components/styled/Shell";
 import MainLogo from "../components/MainLogo";
 import { StyledHeader } from "../components/styled/Header";
 import { StyledCelcius } from "../components/styled/StyledCelcius";
-import { Image } from "../components/styled/Image";
 import { ContainerBox } from "../components/styled/ContainerBox";
-import {
-  FaSearch,
-  FaAngleDown,
-  FaSignOutAlt,
-  FaLock,
-  FaWind,
-  FaTemperatureLow,
-  FaThermometerFull,
-  FaEye,
-} from "react-icons/fa";
-import { MdWaterDrop } from "react-icons/md";
-import { CgCompress } from "react-icons/cg";
-import { GiSunrise, GiSunset } from "react-icons/gi";
+import { FaSearch, FaAngleDown, FaSignOutAlt, FaLock } from "react-icons/fa";
 import { DropDown } from "../components/styled/DropDown";
-import { HideDropDown, ShowDropDown } from "../components/styled/ShowDropDown";
+import { ShowDropDown } from "../components/styled/ShowDropDown";
 import { MainSection } from "../components/styled/MainSection";
 import { StyledSection } from "../components/styled/StyledSection";
-import { Flex } from "../components/styled/Flex";
-import { Daily } from "../components/styled/Daily";
+import Hero from "../components/Hero";
+import DailyWeather from "../components/DailyWeather";
+import {
+  getFormattedData,
+  getGeoLocation,
+  getWeatherData,
+} from "../utils/weather";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const [country, setCountry] = useState("Ghana");
+  const [inputData, setInputData] = useState("");
   const [celcius, setCelcius] = useState(true);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -47,21 +40,66 @@ const Dashboard: React.FC = () => {
     setCelcius(!celcius);
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       console.log(user);
-  //       setLoading(false);
-  //     } else {
-  //       console.log(user);
-  //       setLoading(false);
-  //       navigate("/");
-  //     }
-  //   });
+  const getGeoWeather = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-  //   return unsubscribe;
-  // }, [auth]);
+    try {
+      const data = await getGeoLocation(inputData);
+      console.log(data);
+      if (data.count === 0) {
+        setLoading(false);
+        return setError(
+          "Please provide a valid Country name or a valid city and country name separated by a comma(,)"
+        );
+      } else {
+        const longitude = data.list[0].coord.lon;
+        const latitude = data.list[0].coord.lat;
+
+        const weatherData = await getWeatherData(longitude, latitude);
+        setLoading(false);
+        console.log(weatherData);
+
+        const x = getFormattedData(data.list[0], weatherData);
+        console.log(x);
+        // console.log(data.list[0].coord);
+        // console.log(data.list[0].coord.lat);
+        // console.log(data.list[0].coord.lon);
+      }
+    } catch (err) {
+      console.log(err);
+      setError("Something went wrong. Please try again later!");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // const callAPI = async () => {
+    //   try {
+    //     const data = await getGeoLocation(inputData);
+    //     console.log(data);
+    //     console.log(data.count);
+    //     console.log(data.list[0].coord);
+    //     console.log(data.list[0].coord.lat);
+    //     console.log(data.list[0].coord.lon);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // callAPI();
+    // setLoading(true);
+    // const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     console.log(user);
+    //     setLoading(false);
+    //   } else {
+    //     console.log(user);
+    //     setLoading(false);
+    //     navigate("/");
+    //   }
+    // });
+    // return unsubscribe;
+  }, [auth]);
 
   // Function to logout user
   const logoutUser = async () => {
@@ -90,6 +128,8 @@ const Dashboard: React.FC = () => {
       />
     );
 
+  if (error) return <h2>{error}</h2>;
+
   return (
     <Shell>
       <ContainerBox>
@@ -116,15 +156,21 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div>
-            <div>
-              <input type="text" placeholder="search a country or city ..." />
-              <button>
-                <span>
-                  <FaSearch color="white" />
-                </span>
-                <span>Search</span>
-              </button>
-            </div>
+            <form onSubmit={getGeoWeather}>
+              <div>
+                <input
+                  type="text"
+                  placeholder="search a country or city ..."
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+                <button>
+                  <span>
+                    <FaSearch color="white" />
+                  </span>
+                  <span>Search</span>
+                </button>
+              </div>
+            </form>
           </div>
 
           <div>
@@ -161,102 +207,10 @@ const Dashboard: React.FC = () => {
 
         <MainSection>
           <StyledSection>
-            <div>
-              <h2>Tuesday, 17 February 2023 | Local time: 03:59 PM</h2>
-              <div>
-                <h1>
-                  <span>Accra, </span> <span>Ghana</span>
-                </h1>
-                <article>
-                  <h5>59 &deg;</h5> <h5>Clear</h5>
-                </article>
-
-                <section>
-                  <div>
-                    <div>
-                      <div>
-                        <MdWaterDrop />
-                        <p>Humidity</p>
-                      </div>
-                      <p>79%</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <FaThermometerFull />
-                        <p>High</p>
-                      </div>
-                      <p>108 &deg;</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <FaTemperatureLow />
-                        <p>Low</p>
-                      </div>
-                      <p>2 &deg;</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <FaWind />
-                        <p>Wind</p>
-                      </div>
-                      <p>7 km/h</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div>
-                      <div>
-                        <FaEye />
-                        <p>Visibility</p>
-                      </div>
-                      <p>Unlimited</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <CgCompress />
-                        <p>Pressure</p>
-                      </div>
-                      <p>1008.5 mb</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <GiSunrise />
-                        <p>Sunrise</p>
-                      </div>
-                      <p>05:54 AM</p>
-                    </div>
-
-                    <div>
-                      <div>
-                        <GiSunset />
-                        <p>Sunset</p>
-                      </div>
-                      <p>06:21 PM</p>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            </div>
+            <Hero />
           </StyledSection>
 
-          <Daily>
-            <div>
-              <h2>Daily Forecast</h2>
-              <div></div>
-            </div>
-          </Daily>
-
-          <Daily>
-            <div>
-              <h2>Hourly Forecast</h2>
-              <div></div>
-            </div>
-          </Daily>
+          <DailyWeather />
         </MainSection>
       </ContainerBox>
     </Shell>
