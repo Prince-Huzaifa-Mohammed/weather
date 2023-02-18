@@ -20,6 +20,7 @@ import {
   getGeoLocation,
   getWeatherData,
 } from "../utils/weather";
+import { deleteCountry } from "../utils/localStorage";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -108,6 +109,9 @@ const Dashboard: React.FC = () => {
 
     await signOut(auth);
 
+    // Delete country from localstorage
+    deleteCountry();
+
     setLoggingOut(false);
 
     // navigate("/");
@@ -194,7 +198,7 @@ const Dashboard: React.FC = () => {
                   <FaLock />
                   <span>Change Password</span>
                 </Link>
-                <span onClick={() => navigate("/")}>
+                <span onClick={logoutUser}>
                   <FaSignOutAlt />
                   <span>Logout</span>
                 </span>

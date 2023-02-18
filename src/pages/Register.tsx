@@ -36,6 +36,7 @@ import {
 } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUserCountry, saveUserCountry } from "../utils/localStorage";
 
 const Register: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -143,7 +144,12 @@ const Register: React.FC = () => {
 
           // Retrieving newly saved user details from the database to be used to update state
           const newUser = await getDoc(doc(db, "users", docRef.id));
-          console.log(newUser.data());
+          const userData = newUser.data();
+
+          // Saving User Country to Local Storage
+          // console.log(userData?.country);
+          saveUserCountry(userData?.country);
+          // console.log(getUserCountry);
 
           // ***** Fetch Weather data and update state
           // ************************

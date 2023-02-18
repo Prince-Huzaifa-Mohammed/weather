@@ -27,6 +27,15 @@ import {
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Image } from "../components/styled/Image";
 import { ColorRing } from "react-loader-spinner";
+import { saveUserCountry } from "../utils/localStorage";
+
+type User = {
+  // id: string;
+  name: string;
+  email: string;
+  country: string;
+  // timestamp: object;
+};
 
 const LoginPage: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -79,17 +88,21 @@ const LoginPage: React.FC = () => {
         // Making the request to the database
         const userRefIfAny = await getDocs(q);
 
-        let res: object[] = [];
-        userRefIfAny.forEach((user) => {
+        let res: any = [];
+        // let userCountry: User | null = null
+        userRefIfAny.forEach((country) => {
           res.push({
-            id: user.id,
-            ...user.data(),
+            id: country.id,
+            ...country.data(),
           });
         });
 
         if (res.length > 0) {
           // Update state here with message to be used in toast
           // ******
+
+          // Save users country to localstorage
+          saveUserCountry(res[0]?.country);
 
           console.log(res);
           SetSigningIn(false);
@@ -122,7 +135,7 @@ const LoginPage: React.FC = () => {
       // Making the request to the database
       const userRefIfAny = await getDocs(q);
 
-      let res: object[] = [];
+      let res: any = [];
       userRefIfAny.forEach((country) => {
         res.push({
           // id: country.id,
@@ -131,6 +144,9 @@ const LoginPage: React.FC = () => {
       });
 
       if (res.length > 0) {
+        // Save users country to localstorage
+        saveUserCountry(res[0]?.country);
+
         SetSigningIn(false);
 
         // Update state here ************************

@@ -28,6 +28,7 @@ import { InputField } from "../components/styled/InputField";
 import { emailIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { saveUserCountry } from "../utils/localStorage";
 
 const Country: React.FC = () => {
   const [country, setCountry] = useState("Ghana");
@@ -79,7 +80,7 @@ const Country: React.FC = () => {
           // ******
           navigate("/login");
         } else {
-          // If code get here, means user doesn't exist so new User should be created
+          // If code execution gets here, means user doesn't exist so a new User should be created
           const userCredentials = await signInWithPopup(
             auth,
             new GoogleAuthProvider()
@@ -98,7 +99,10 @@ const Country: React.FC = () => {
 
           // Retrieving newly saved user details from the database to be used to update state
           const newUser = await getDoc(doc(db, "users", docRef.id));
-          console.log(newUser.data());
+          const userData = newUser.data();
+
+          // Save users country to localstorage
+          saveUserCountry(userData?.country);
 
           // ***** Fetch Weather data and update state
           // ************************
