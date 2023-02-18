@@ -101,19 +101,19 @@ const LoginPage: React.FC = () => {
           // Update state here with message to be used in toast
           // ******
 
-          // Save users country to localstorage
+          // Save user country to localstorage
           saveUserCountry(res[0]?.country);
 
           console.log(res);
+          navigate("/");
           SetSigningIn(false);
-          navigate("/dashboard");
         } else {
-          SetSigningIn(false);
           toast.error("Please create an account!");
+          SetSigningIn(false);
         }
       } catch (err) {
-        SetSigningIn(false);
         toast.error("Please try again later!");
+        SetSigningIn(false);
       }
     }
   };

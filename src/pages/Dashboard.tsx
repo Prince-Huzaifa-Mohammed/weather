@@ -20,16 +20,22 @@ import {
   getGeoLocation,
   getWeatherData,
 } from "../utils/weather";
-import { deleteCountry } from "../utils/localStorage";
+import { deleteCountry, getUserCountry } from "../utils/localStorage";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../Redux/store";
+import { addWeatherData } from "../Redux/features/weatherSlice";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [country, setCountry] = useState("Ghana");
   const [inputData, setInputData] = useState("");
   const [celcius, setCelcius] = useState(true);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const weather = useSelector((state: RootState) => state.weather.value);
 
   const navigate = useNavigate();
 
@@ -75,31 +81,45 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    // const callAPI = async () => {
-    //   try {
-    //     const data = await getGeoLocation(inputData);
-    //     console.log(data);
-    //     console.log(data.count);
-    //     console.log(data.list[0].coord);
-    //     console.log(data.list[0].coord.lat);
-    //     console.log(data.list[0].coord.lon);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-    // callAPI();
-    // setLoading(true);
-    // const unsubscribe = onAuthStateChanged(auth, (user) => {
-    //   if (user) {
-    //     console.log(user);
-    //     setLoading(false);
-    //   } else {
-    //     console.log(user);
-    //     setLoading(false);
-    //     navigate("/");
-    //   }
-    // });
-    // return unsubscribe;
+    setLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+
+        // Get user country from localstorage
+        const userCountry = getUserCountry();
+
+        // Fetch weather data to power users dashboards
+        const apiCall = async (location: string) => {
+          try {
+            const data = await getGeoLocation(location);
+            const longitude = data.list[0].coord.lon;
+            const latitude = data.list[0].coord.lat;
+            const weatherData = await getWeatherData(longitude, latitude);
+
+            const formattedData = getFormattedData(data.list[0], weatherData);
+            console.log(formattedData);
+
+            dispatch(addWeatherData(formattedData));
+
+            console.log(weather);
+            // return formattedData;
+          } catch (err) {
+            console.log(err);
+          }
+        };
+
+        if (userCountry) apiCall(userCountry);
+
+        setLoading(false);
+      } else {
+        console.log(user);
+        setLoading(false);
+        navigate("/");
+      }
+    });
+
+    return unsubscribe;
   }, [auth]);
 
   // Function to logout user
@@ -215,6 +235,8 @@ const Dashboard: React.FC = () => {
           </StyledSection>
 
           <DailyWeather />
+
+          {weather && <h1>{weather.country}</h1>}
         </MainSection>
       </ContainerBox>
     </Shell>

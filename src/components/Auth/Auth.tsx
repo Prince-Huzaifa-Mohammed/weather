@@ -17,8 +17,8 @@ const Auth: React.FC<Props> = (props) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
-        setLoading(false);
         navigate("/dashboard");
+        setLoading(false);
       } else {
         console.log(user);
         setLoading(false);

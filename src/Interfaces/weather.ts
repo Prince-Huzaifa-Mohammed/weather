@@ -71,3 +71,33 @@ export interface OneCall {
   daily: DailyData[];
   hourly: HourlyData[];
 }
+
+//////////////////////////////////////
+export interface DailyWeather {
+  day: string;
+  temp: number;
+  icon: string;
+}
+
+export interface HourlyWeather {
+  time: string;
+  temp: number;
+  icon: string;
+}
+
+export interface WeatherData {
+  country: string;
+  currentCondition: string;
+  currentPressure: number;
+  currentTemperature: number;
+  currentTime: string;
+  name: string;
+  sunrise: string;
+  sunset: string;
+  timezone: string;
+  uvi: number;
+  visibility: number;
+  windSpeed: number;
+  dailyData: DailyWeather[];
+  hourlyData: HourlyWeather[];
+}
