@@ -19,11 +19,13 @@ import {
   getFormattedData,
   getGeoLocation,
   getWeatherData,
+  isValidCountry,
 } from "../utils/weather";
-import { deleteCountry, getUserCountry } from "../utils/localStorage";
+import { deleteUserBio, getUserBio } from "../utils/localStorage";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../Redux/store";
 import { addWeatherData } from "../Redux/features/weatherSlice";
+import { addUser } from "../Redux/features/userSlice";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -35,43 +37,65 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
+  // Data required from redux to power user dashboard
   const weather = useSelector((state: RootState) => state.weather.value);
+  const user = useSelector((state: RootState) => state.user.value);
 
   const navigate = useNavigate();
 
+  // Function to open and close header dropdown
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
   };
 
+  // Function to switch from celcius to fahrenheit and vise versa
   const toggleCelcuis = () => {
     setCelcius(!celcius);
   };
 
+  // Dashboad search functionality
   const getGeoWeather = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      // Try to get longitude and latitude by location name
       const data = await getGeoLocation(inputData);
-      console.log(data);
+
       if (data.count === 0) {
+        // Means coordinates not found
         setLoading(false);
         return setError(
           "Please provide a valid Country name or a valid city and country name separated by a comma(,)"
         );
       } else {
+        // If code execution gets here, it means coordinates for search location has been found
+
+        // Check if searched location is within the acceptable search countries(Ghana, Germany, Rwanda)
+        const validCountrySearch = isValidCountry(data.list[0]);
+
+        if (!validCountrySearch) {
+          setLoading(false);
+          return setError(
+            "You are only allowed to search for places in Germany, Ghana or Rwanda"
+          );
+        }
+
+        // If code execution gets here, it means coordinates have been found and searched location in acceptable
+
         const longitude = data.list[0].coord.lon;
         const latitude = data.list[0].coord.lat;
 
+        // Get weather data from coordinates (long and lat)
         const weatherData = await getWeatherData(longitude, latitude);
-        setLoading(false);
-        console.log(weatherData);
 
-        const x = getFormattedData(data.list[0], weatherData);
-        console.log(x);
-        // console.log(data.list[0].coord);
-        // console.log(data.list[0].coord.lat);
-        // console.log(data.list[0].coord.lon);
+        // Transform huge data set to only data that is needed to power the page
+        const formattedData = getFormattedData(data.list[0], weatherData);
+        console.log(formattedData);
+
+        // Save data to state to trigger rerender
+        dispatch(addWeatherData(formattedData));
+        setLoading(false);
       }
     } catch (err) {
       console.log(err);
@@ -80,14 +104,14 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  // Carry out an Auth check as well as provide user's country data on page load
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
-
         // Get user country from localstorage
-        const userCountry = getUserCountry();
+        const userBio = getUserBio();
+        console.log(userBio);
 
         // Fetch weather data to power users dashboards
         const apiCall = async (location: string) => {
@@ -99,23 +123,22 @@ const Dashboard: React.FC = () => {
 
             const formattedData = getFormattedData(data.list[0], weatherData);
             console.log(formattedData);
-
+            // Update state with weather data
             dispatch(addWeatherData(formattedData));
+            dispatch(addUser(userBio));
 
-            console.log(weather);
-            // return formattedData;
+            setLoading(false);
           } catch (err) {
             console.log(err);
+            setError("Something went wrong. Please try again later!");
+            setLoading(false);
           }
         };
 
-        if (userCountry) apiCall(userCountry);
-
-        setLoading(false);
+        apiCall(userBio.country);
       } else {
-        console.log(user);
-        setLoading(false);
         navigate("/");
+        setLoading(false);
       }
     });
 
@@ -124,17 +147,14 @@ const Dashboard: React.FC = () => {
 
   // Function to logout user
   const logoutUser = async () => {
-    console.log("logging out");
     setLoggingOut(true);
 
     await signOut(auth);
 
     // Delete country from localstorage
-    deleteCountry();
+    deleteUserBio();
 
     setLoggingOut(false);
-
-    // navigate("/");
   };
 
   if (loading) return <h1>Loading ...</h1>;
@@ -199,8 +219,8 @@ const Dashboard: React.FC = () => {
 
           <div>
             <div>
-              <img src="./assets/Rwanda.svg" alt="" />
-              <h2>M</h2>
+              <img src={`./assets/${user?.country}.svg`} alt="" />
+              <h2>{user?.name[0]}</h2>
               <span onClick={toggleDropDown}>
                 <FaAngleDown />
               </span>
@@ -231,12 +251,10 @@ const Dashboard: React.FC = () => {
 
         <MainSection>
           <StyledSection>
-            <Hero />
+            <Hero weather={weather} />
           </StyledSection>
 
           <DailyWeather />
-
-          {weather && <h1>{weather.country}</h1>}
         </MainSection>
       </ContainerBox>
     </Shell>

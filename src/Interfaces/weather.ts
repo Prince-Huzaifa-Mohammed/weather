@@ -101,3 +101,9 @@ export interface WeatherData {
   dailyData: DailyWeather[];
   hourlyData: HourlyWeather[];
 }
+
+export interface UserRes {
+  country?: string;
+  email?: string;
+  name?: string;
+}

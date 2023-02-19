@@ -1,11 +1,14 @@
-export const saveUserCountry = (country: string) => {
-  localStorage.setItem("country", country);
+import { UserRes } from "../Interfaces/weather";
+
+export const saveUserBio = (userBio: UserRes) => {
+  localStorage.setItem("userBio", JSON.stringify(userBio));
 };
 
-export const getUserCountry = () => {
-  return localStorage.getItem("country");
+export const getUserBio = () => {
+  const userJSON = localStorage.getItem("userBio");
+  if (userJSON) return JSON.parse(userJSON);
 };
 
-export const deleteCountry = () => {
-  localStorage.removeItem("country");
+export const deleteUserBio = () => {
+  localStorage.removeItem("userBio");
 };

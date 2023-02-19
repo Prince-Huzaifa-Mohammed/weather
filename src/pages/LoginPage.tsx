@@ -27,7 +27,9 @@ import {
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Image } from "../components/styled/Image";
 import { ColorRing } from "react-loader-spinner";
-import { saveUserCountry } from "../utils/localStorage";
+import { saveUserBio } from "../utils/localStorage";
+import { useDispatch } from "react-redux";
+import { UserRes } from "../Interfaces/weather";
 
 type User = {
   // id: string;
@@ -44,6 +46,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const colRef = collection(db, "users");
 
@@ -88,23 +91,37 @@ const LoginPage: React.FC = () => {
         // Making the request to the database
         const userRefIfAny = await getDocs(q);
 
-        let res: any = [];
+        let userBio: UserRes = {};
         // let userCountry: User | null = null
-        userRefIfAny.forEach((country) => {
-          res.push({
-            id: country.id,
-            ...country.data(),
-          });
+        userRefIfAny.forEach((ref) => {
+          userBio.name = ref.data().name;
+          userBio.country = ref.data().country;
+          userBio.email = ref.data().email;
+          // res.push({
+          //   id: country.id,
+          //   ...country.data(),
+          // });
         });
 
-        if (res.length > 0) {
+        console.log(userBio);
+
+        if (Object.keys(userBio).length !== 0) {
           // Update state here with message to be used in toast
           // ******
 
           // Save user country to localstorage
-          saveUserCountry(res[0]?.country);
+          saveUserBio(userBio);
 
-          console.log(res);
+          // const user = {
+          //   name: res[0].name,
+          //   email: res[0].email,
+          //   country: res[0].country,
+          //   id: res[0].id,
+          // };
+
+          // dispatch(addUser(user));
+
+          console.log(userBio);
           navigate("/");
           SetSigningIn(false);
         } else {
@@ -135,19 +152,21 @@ const LoginPage: React.FC = () => {
       // Making the request to the database
       const userRefIfAny = await getDocs(q);
 
-      let res: any = [];
-      userRefIfAny.forEach((country) => {
-        res.push({
-          // id: country.id,
-          ...country.data(),
-        });
+      let userBio: UserRes = {};
+      // let userCountry: User | null = null
+      userRefIfAny.forEach((ref) => {
+        userBio.name = ref.data().name;
+        userBio.country = ref.data().country;
+        userBio.email = ref.data().email;
+        // res.push({
+        //   id: country.id,
+        //   ...country.data(),
+        // });
       });
 
-      if (res.length > 0) {
+      if (Object.keys(userBio).length !== 0) {
         // Save users country to localstorage
-        saveUserCountry(res[0]?.country);
-
-        SetSigningIn(false);
+        saveUserBio(userBio);
 
         // Update state here ************************
 
@@ -155,6 +174,7 @@ const LoginPage: React.FC = () => {
 
         //console.log(user);
         navigate("/dashboard");
+        SetSigningIn(false);
       } else {
         await signOut(auth);
 

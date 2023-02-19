@@ -32,7 +32,6 @@ export const getFormattedData = (
   geoData: CountryData,
   weatherInfo: OneCall
 ) => {
-  console.log(geoData);
   const hourly = weatherInfo.hourly.slice(1, 7);
   const daily = weatherInfo.daily.slice(1, 7);
 
@@ -74,4 +73,17 @@ export const getFormattedData = (
   };
 
   return finalData;
+};
+
+export const isValidCountry = (data: CountryData) => {
+  console.log(data);
+  if (
+    data.sys.country === "GH" ||
+    data.sys.country === "RW" ||
+    data.sys.country === "DE"
+  ) {
+    return true;
+  }
+
+  return false;
 };

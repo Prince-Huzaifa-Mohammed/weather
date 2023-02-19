@@ -36,7 +36,8 @@ import {
 } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserCountry, saveUserCountry } from "../utils/localStorage";
+import { getUserBio, saveUserBio } from "../utils/localStorage";
+import { UserRes } from "../Interfaces/weather";
 
 const Register: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -100,24 +101,23 @@ const Register: React.FC = () => {
         const q = query(colRef, where("email", "==", email));
         const userRefIfAny = await getDocs(q);
 
-        let res: object[] = [];
-        userRefIfAny.forEach((country) => {
-          res.push({
-            id: country.id,
-            ...country.data(),
-          });
+        let userBio: UserRes = {};
+        userRefIfAny.forEach((ref) => {
+          userBio.name = ref.data().name;
+          userBio.country = ref.data().country;
+          userBio.email = ref.data().email;
         });
 
-        console.log(res);
+        console.log(userBio);
 
         // If user account already exist, we redirect user to login page
-        if (res.length > 0) {
+        if (Object.keys(userBio).length !== 0) {
           // Update state here with message
           // ***************
-          setRegistering(false);
           navigate("/login");
+          setRegistering(false);
         } else {
-          // If code gets here, it means no user exist so a fresh account shoud be created
+          // If code gets here, it means no user exist. so a fresh account shoud be created
           const userCredentials = await createUserWithEmailAndPassword(
             auth,
             email,
@@ -148,7 +148,11 @@ const Register: React.FC = () => {
 
           // Saving User Country to Local Storage
           // console.log(userData?.country);
-          saveUserCountry(userData?.country);
+          saveUserBio({
+            name: userData?.name,
+            country: userData?.country,
+            email: userData?.email,
+          });
           // console.log(getUserCountry);
 
           // ***** Fetch Weather data and update state

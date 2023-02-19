@@ -8,18 +8,21 @@ import {
 import { GiSunrise, GiSunset } from "react-icons/gi";
 import { MdWaterDrop } from "react-icons/md";
 import { StyledHero } from "./styled/StyledHero";
+import { WeatherData } from "../Interfaces/weather";
+import React from "react";
 
-const Hero = () => {
+const Hero = ({ weather }: { weather: WeatherData | null }) => {
   return (
     <StyledHero>
       <div>
-        <h2>Tuesday, 17 February 2023 | Local time: 03:59 PM</h2>
+        <h2>{weather?.currentTime}</h2>
         <div>
           <h1>
-            <span>Accra, </span> <span>Ghana</span>
+            <span>{weather?.name}, </span> <span>{weather?.country}</span>
           </h1>
           <article>
-            <h5>59 &deg;</h5> <h5>Clear</h5>
+            <h5>{weather?.currentTemperature} &deg;</h5>{" "}
+            <h5>{weather?.currentCondition}</h5>
           </article>
 
           <section>
@@ -27,25 +30,17 @@ const Hero = () => {
               <div>
                 <div>
                   <MdWaterDrop />
-                  <p>Humidity</p>
+                  <p>UV Index</p>
                 </div>
-                <p>79%</p>
+                <p>{weather?.uvi}</p>
               </div>
 
               <div>
                 <div>
-                  <FaThermometerFull />
-                  <p>High</p>
+                  <CgCompress />
+                  <p>Pressure</p>
                 </div>
-                <p>108 &deg;</p>
-              </div>
-
-              <div>
-                <div>
-                  <FaTemperatureLow />
-                  <p>Low</p>
-                </div>
-                <p>2 &deg;</p>
+                <p>{weather?.currentPressure} mb</p>
               </div>
 
               <div>
@@ -53,7 +48,7 @@ const Hero = () => {
                   <FaWind />
                   <p>Wind</p>
                 </div>
-                <p>7 km/h</p>
+                <p>{weather?.windSpeed} km/h</p>
               </div>
             </div>
 
@@ -63,15 +58,7 @@ const Hero = () => {
                   <FaEye />
                   <p>Visibility</p>
                 </div>
-                <p>Unlimited</p>
-              </div>
-
-              <div>
-                <div>
-                  <CgCompress />
-                  <p>Pressure</p>
-                </div>
-                <p>1008.5 mb</p>
+                <p>{weather?.visibility}</p>
               </div>
 
               <div>
@@ -79,7 +66,7 @@ const Hero = () => {
                   <GiSunrise />
                   <p>Sunrise</p>
                 </div>
-                <p>05:54 AM</p>
+                <p>{weather?.sunrise}</p>
               </div>
 
               <div>
@@ -87,7 +74,7 @@ const Hero = () => {
                   <GiSunset />
                   <p>Sunset</p>
                 </div>
-                <p>06:21 PM</p>
+                <p>{weather?.sunset}</p>
               </div>
             </div>
           </section>

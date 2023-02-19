@@ -28,7 +28,7 @@ import { InputField } from "../components/styled/InputField";
 import { emailIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { saveUserCountry } from "../utils/localStorage";
+import { saveUserBio } from "../utils/localStorage";
 
 const Country: React.FC = () => {
   const [country, setCountry] = useState("Ghana");
@@ -102,7 +102,11 @@ const Country: React.FC = () => {
           const userData = newUser.data();
 
           // Save users country to localstorage
-          saveUserCountry(userData?.country);
+          saveUserBio({
+            name: userData?.name,
+            country: userData?.country,
+            email: userData?.email,
+          });
 
           // ***** Fetch Weather data and update state
           // ************************
