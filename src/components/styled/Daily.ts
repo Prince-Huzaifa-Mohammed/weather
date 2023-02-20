@@ -17,6 +17,7 @@ export const Daily = styled.section`
       color: ${({ theme }) => theme.colors.white};
       border-radius: 1.5rem 1.5rem 0 0;
       padding: 0.5rem 2rem;
+      text-align: center;
 
       @media (max-width: ${({ theme }) => theme.breakPoints.mobile}) {
         font-size: 1.4rem;

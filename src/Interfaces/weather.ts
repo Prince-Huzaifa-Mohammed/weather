@@ -107,3 +107,13 @@ export interface UserRes {
   email?: string;
   name?: string;
 }
+
+export interface Conditions {
+  Clouds: string;
+  Clear: string;
+  Sunny: string;
+  Raining: string;
+  Cloudy: string;
+  Rainy: string;
+  Rain: string;
+}

@@ -87,3 +87,9 @@ export const isValidCountry = (data: CountryData) => {
 
   return false;
 };
+
+export const fahrenheit = (celcius: number) => {
+  // (°C * 1.8) + 32 = °F --- Formular
+  const fahrenheit = celcius * 1.8 + 32;
+  return fahrenheit.toFixed(2);
+};

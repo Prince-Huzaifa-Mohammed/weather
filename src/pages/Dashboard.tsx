@@ -26,16 +26,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../Redux/store";
 import { addWeatherData } from "../Redux/features/weatherSlice";
 import { addUser } from "../Redux/features/userSlice";
+import HourlyWeather from "../components/HourlyWeather";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [country, setCountry] = useState("Ghana");
   const [inputData, setInputData] = useState("");
-  const [celcius, setCelcius] = useState(true);
+  const [isCelcius, setIsCelcius] = useState(true);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+
+  // const conditions = {
+  //   Clouds: "cloudy.jpg",
+  //   Clear: "clear.jpg",
+  //   Sunny: "sunny.jpg",
+  //   Raining: "raining.jpg",
+  //   Cloudy: "cloudy.jpg",
+  //   Rainy: "raining.jpg",
+  //   Rain: "raining.jpg",
+  // };
 
   // Data required from redux to power user dashboard
   const weather = useSelector((state: RootState) => state.weather.value);
@@ -50,62 +60,73 @@ const Dashboard: React.FC = () => {
 
   // Function to switch from celcius to fahrenheit and vise versa
   const toggleCelcuis = () => {
-    setCelcius(!celcius);
+    setIsCelcius(!isCelcius);
   };
 
   // Dashboad search functionality
   const getGeoWeather = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const trimedInputData = inputData.trim();
+    setInputData("");
+    setError("");
     setLoading(true);
 
-    try {
-      // Try to get longitude and latitude by location name
-      const data = await getGeoLocation(inputData);
+    if (trimedInputData === "") {
+      setLoading(false);
+      return setError(
+        "Please provide a valid location! Search field cannot be empty!"
+      );
+    } else {
+      try {
+        // Try to get longitude and latitude by location name
+        const data = await getGeoLocation(trimedInputData);
 
-      if (data.count === 0) {
-        // Means coordinates not found
-        setLoading(false);
-        return setError(
-          "Please provide a valid Country name or a valid city and country name separated by a comma(,)"
-        );
-      } else {
-        // If code execution gets here, it means coordinates for search location has been found
-
-        // Check if searched location is within the acceptable search countries(Ghana, Germany, Rwanda)
-        const validCountrySearch = isValidCountry(data.list[0]);
-
-        if (!validCountrySearch) {
+        if (data.count === 0) {
+          // Means coordinates not found
           setLoading(false);
           return setError(
-            "You are only allowed to search for places in Germany, Ghana or Rwanda"
+            "Please provide a valid Country name or a valid city and country name separated by a comma(,)"
           );
+        } else {
+          // If code execution gets here, it means coordinates for search location has been found
+
+          // Check if searched location is within the acceptable search countries(Ghana, Germany, Rwanda)
+          const validCountrySearch = isValidCountry(data.list[0]);
+
+          if (!validCountrySearch) {
+            setLoading(false);
+            return setError(
+              "You are only allowed to search for places in Germany, Ghana or Rwanda"
+            );
+          }
+
+          // If code execution gets here, it means coordinates have been found and searched location in acceptable
+
+          const longitude = data.list[0].coord.lon;
+          const latitude = data.list[0].coord.lat;
+
+          // Get weather data from coordinates (long and lat)
+          const weatherData = await getWeatherData(longitude, latitude);
+
+          // Transform huge data set to only data that is needed to power the page
+          const formattedData = getFormattedData(data.list[0], weatherData);
+          console.log(formattedData);
+
+          // Save data to state to trigger rerender
+          dispatch(addWeatherData(formattedData));
+          setLoading(false);
         }
-
-        // If code execution gets here, it means coordinates have been found and searched location in acceptable
-
-        const longitude = data.list[0].coord.lon;
-        const latitude = data.list[0].coord.lat;
-
-        // Get weather data from coordinates (long and lat)
-        const weatherData = await getWeatherData(longitude, latitude);
-
-        // Transform huge data set to only data that is needed to power the page
-        const formattedData = getFormattedData(data.list[0], weatherData);
-        console.log(formattedData);
-
-        // Save data to state to trigger rerender
-        dispatch(addWeatherData(formattedData));
+      } catch (err) {
+        console.log(err);
+        setError("Something went wrong. Please try again later!");
         setLoading(false);
       }
-    } catch (err) {
-      console.log(err);
-      setError("Something went wrong. Please try again later!");
-      setLoading(false);
     }
   };
 
   // Carry out an Auth check as well as provide user's country data on page load
   useEffect(() => {
+    setError("");
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -157,23 +178,6 @@ const Dashboard: React.FC = () => {
     setLoggingOut(false);
   };
 
-  if (loading) return <h1>Loading ...</h1>;
-
-  if (loggingOut)
-    return (
-      <ColorRing
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="blocks-loading"
-        wrapperStyle={{}}
-        wrapperClass="blocks-wrapper"
-        colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
-      />
-    );
-
-  if (error) return <h2>{error}</h2>;
-
   return (
     <Shell>
       <ContainerBox>
@@ -181,7 +185,7 @@ const Dashboard: React.FC = () => {
         <StyledHeader>
           <div>
             <div>
-              {celcius ? (
+              {isCelcius ? (
                 <>
                   <StyledCelcius>
                     <span>&deg; C</span>
@@ -204,7 +208,8 @@ const Dashboard: React.FC = () => {
               <div>
                 <input
                   type="text"
-                  placeholder="search a country or city ..."
+                  placeholder="Example Germany or Kigali, Rwanda"
+                  value={inputData}
                   onChange={(e) => setInputData(e.target.value)}
                 />
                 <button>
@@ -250,11 +255,58 @@ const Dashboard: React.FC = () => {
         {/*  */}
 
         <MainSection>
-          <StyledSection>
-            <Hero weather={weather} />
-          </StyledSection>
+          {loading && (
+            <aside>
+              <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={[
+                  "#fc8e3e",
+                  "#0198BA",
+                  "#fc8e3e",
+                  "##0198BA",
+                  "#fc8e3e",
+                ]}
+              />
+            </aside>
+          )}
 
-          <DailyWeather />
+          {loggingOut && (
+            <aside>
+              <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={[
+                  "#fc8e3e",
+                  "#0198BA",
+                  "#fc8e3e",
+                  "##0198BA",
+                  "#fc8e3e",
+                ]}
+              />
+            </aside>
+          )}
+
+          {weather && !error && !loggingOut && !loading && (
+            <>
+              <StyledSection>
+                <Hero weather={weather} isCelcius={isCelcius} />
+              </StyledSection>
+
+              <HourlyWeather weather={weather} isCelcius={isCelcius} />
+              <DailyWeather weather={weather} isCelcius={isCelcius} />
+            </>
+          )}
+
+          {error && <h6>{error}</h6>}
         </MainSection>
       </ContainerBox>
     </Shell>

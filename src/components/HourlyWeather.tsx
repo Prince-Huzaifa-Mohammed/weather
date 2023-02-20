@@ -1,31 +1,29 @@
-import React from "react";
 import { Daily } from "./styled/Daily";
 import { WeatherData } from "../Interfaces/weather";
 import { fahrenheit } from "../utils/weather";
 
-const DailyWeather = ({
+const HourlyWeather = ({
   weather,
   isCelcius,
 }: {
   weather: WeatherData | null;
   isCelcius: boolean;
 }) => {
-  // http://openweathermap.org/img/wn/10d@2x.png
-
   return (
     <Daily>
       <div>
-        <h2>Daily Forecast</h2>
+        <h2>Hourly Forecast</h2>
         <div>
-          {weather?.dailyData.map((day) => (
-            <div key={day.day}>
-              <span>{day.day}</span>
+          {weather?.hourlyData.map((hour) => (
+            <div key={hour.time}>
+              <span>{hour.time}</span>
               <img
-                src={`http://openweathermap.org/img/wn/${day.icon}@2x.png`}
+                src={`http://openweathermap.org/img/wn/${hour.icon}@2x.png`}
                 alt=""
               />
               <p>
-                {weather && isCelcius ? day.temp : fahrenheit(day.temp)} &deg;
+                {weather && isCelcius ? hour.temp : fahrenheit(hour.temp)}
+                &deg;
               </p>
             </div>
           ))}
@@ -35,4 +33,4 @@ const DailyWeather = ({
   );
 };
 
-export default DailyWeather;
+export default HourlyWeather;

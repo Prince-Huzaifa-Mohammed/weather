@@ -8,12 +8,27 @@ import {
 import { GiSunrise, GiSunset } from "react-icons/gi";
 import { MdWaterDrop } from "react-icons/md";
 import { StyledHero } from "./styled/StyledHero";
-import { WeatherData } from "../Interfaces/weather";
-import React from "react";
+import { Conditions, WeatherData } from "../Interfaces/weather";
+import { fahrenheit } from "../utils/weather";
 
-const Hero = ({ weather }: { weather: WeatherData | null }) => {
+const Hero = ({
+  weather,
+  isCelcius,
+}: {
+  weather: WeatherData | null;
+  isCelcius: boolean;
+}) => {
+  let image = "";
+  if (weather?.currentCondition === "Clouds") image = "cloudy.jpg";
+  else if (weather?.currentCondition === "Clear") image = "clear.jpg";
+  else if (weather?.currentCondition === "Rain") image = "raining.jpg";
+  else if (weather?.currentCondition === "Sunny") image = "sunny.jpg";
+  else if (weather?.currentCondition === "Haze") image = "haze.jpg";
+  else if (weather?.currentCondition === "Mist") image = "mist.jpg";
+  else image = "clear.jpg";
+
   return (
-    <StyledHero>
+    <StyledHero image={image}>
       <div>
         <h2>{weather?.currentTime}</h2>
         <div>
@@ -21,7 +36,13 @@ const Hero = ({ weather }: { weather: WeatherData | null }) => {
             <span>{weather?.name}, </span> <span>{weather?.country}</span>
           </h1>
           <article>
-            <h5>{weather?.currentTemperature} &deg;</h5>{" "}
+            <h5>
+              {weather && isCelcius
+                ? weather.currentTemperature
+                : fahrenheit(weather!.currentTemperature)}
+              &deg;
+            </h5>
+            {/* <h5>{weather?.currentTemperature} &deg;</h5> */}
             <h5>{weather?.currentCondition}</h5>
           </article>
 

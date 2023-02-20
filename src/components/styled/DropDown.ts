@@ -8,6 +8,7 @@ export const DropDown = styled.article`
   box-shadow: ${({ theme }) => theme.boxShadows.boxShadowMedium};
   display: flex;
   flex-direction: column;
+  z-index: 5;
 
   /* padding: 1rem; */
 

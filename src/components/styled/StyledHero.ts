@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { Conditions } from "../../Interfaces/weather";
 
-export const StyledHero = styled.section`
+type Props = {
+  image: string;
+};
+
+export const StyledHero = styled.section<Props>`
   div {
     display: flex;
     flex-direction: column;
@@ -29,7 +34,7 @@ export const StyledHero = styled.section`
           rgba(0, 0, 0, 0.5),
           rgba(0, 0, 0, 0.5)
         ),
-        url(./assets/clear.jpg);
+        url(./assets/${({ image }) => image});
       min-height: 40rem;
 
       border-radius: 0 0 1.5rem 1.5rem;
@@ -40,6 +45,7 @@ export const StyledHero = styled.section`
       article {
         display: flex;
         justify-content: space-around;
+        margin-top: 3rem;
 
         h5 {
           font-size: 3rem;
@@ -53,7 +59,7 @@ export const StyledHero = styled.section`
         justify-content: space-between;
         background-color: rgba(0, 0, 0, 0.5);
         flex-wrap: wrap;
-        margin-top: 3rem;
+        margin-top: 5rem;
 
         @media (max-width: 562px) {
           justify-content: center;
@@ -75,7 +81,7 @@ export const StyledHero = styled.section`
 
           display: flex;
           flex-direction: column;
-          gap: 3rem;
+          gap: 4rem;
 
           div {
             display: flex;
