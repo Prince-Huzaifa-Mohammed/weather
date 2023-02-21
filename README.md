@@ -28,5 +28,6 @@ The following Libraries, frameworks and packages were used
 5. Redux to manage the state of this application
 6. Styled components
 7. React Loader Spinner to manage the loading states when data is being fetched.
+8. React Loader Spinner to display various notifications to the user.
 
 ## How to Use this App
