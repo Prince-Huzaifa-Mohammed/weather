@@ -32,6 +32,7 @@ import { UserRes } from "../Interfaces/weather";
 import Spinner from "../components/Spinner";
 import { RootState } from "../Redux/store";
 import { removeError } from "../Redux/features/errorSlice";
+import { StyledLineBtn } from "../components/styled/StyledLineBtn";
 
 const LoginPage: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -43,10 +44,16 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  if (error) {
-    toast.error(error);
-  }
-  dispatch(removeError());
+  // let error = useSelector((state: RootState) => state.error.value);
+  // toast.error(error);
+  // toast.error(error);
+  // if (error) {
+  //   console.log(error);
+  //   // toast.error(error);
+  //   // setError("");
+  //   // dispatch(removeError());
+  // }
+  // error = "";
 
   const navigate = useNavigate();
   const colRef = collection(db, "users");
@@ -61,6 +68,9 @@ const LoginPage: React.FC = () => {
 
   // SIGN IN WITH EMAIL AND PASSWORD ************************************
   const signinWithEmailAndPassord = async () => {
+    // Clear existing error from state
+    dispatch(removeError());
+
     // Validate user input
     const validationErrors = [];
 
@@ -74,7 +84,7 @@ const LoginPage: React.FC = () => {
       validationErrors.map((error) => toast.error(error));
     } else {
       SetSigningIn(true);
-      setError("");
+      // setError("");
 
       try {
         const credentials = await signInWithEmailAndPassword(
@@ -126,8 +136,11 @@ const LoginPage: React.FC = () => {
   // SIGN IN WITH GMAIL ************************************
 
   const signInWithGoogle = async () => {
+    // Clear existing error from state
+    dispatch(removeError());
+
     SetSigningIn(false);
-    setError("");
+    // setError("");
 
     try {
       const credentials = await signInWithPopup(auth, new GoogleAuthProvider());
@@ -202,6 +215,7 @@ const LoginPage: React.FC = () => {
         <PrimaryBox></PrimaryBox>
         <Content>
           <SmallContainer>
+            {error && <h6>{error}</h6>}
             <h2>Log in to your Account</h2>
             <p>Welcome back, please enter your details</p>
 
@@ -235,7 +249,11 @@ const LoginPage: React.FC = () => {
                 Log in
               </Button>
               <ButtonOutlined
-                onClick={() => navigate("/register")}
+                onClick={() => {
+                  // Clear existing error from state
+                  dispatch(removeError());
+                  navigate("/register");
+                }}
                 width="100%"
               >
                 Register
@@ -249,7 +267,17 @@ const LoginPage: React.FC = () => {
               Signin with Google
             </ButtonOutlined>
 
-            <Link to="/reset-password">Forgot Password?</Link>
+            <StyledLineBtn
+              onClick={() => {
+                // Clear existing error from state
+                dispatch(removeError());
+                navigate("/reset-password");
+              }}
+            >
+              Forgot Password?
+            </StyledLineBtn>
+
+            {/* <Link to="/reset-password">Forgot Password?</Link> */}
           </SmallContainer>
         </Content>
         <ToastContainer />

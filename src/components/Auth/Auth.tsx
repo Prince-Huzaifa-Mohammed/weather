@@ -3,12 +3,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import Spinner from "../Spinner";
-import { Shell } from "../styled/Shell";
-import { SecondaryBox } from "../styled/SecondaryBox";
-import MainLogo from "../MainLogo";
-import { PrimaryBox } from "../styled/PrimaryBox";
-import { Container } from "../styled/Container";
-import { SmallContainer } from "../styled/SmallContainer";
 
 interface Props extends PropsWithChildren {}
 

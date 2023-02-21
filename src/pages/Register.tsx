@@ -27,7 +27,6 @@ import { Shell } from "../components/styled/Shell";
 import { SmallContainer } from "../components/styled/SmallContainer";
 import { StyledSelect } from "../components/styled/StyledSelect";
 import { auth } from "../config/firebase";
-import { ColorRing } from "react-loader-spinner";
 import {
   countryIsValid,
   emailIsValid,
@@ -176,6 +175,7 @@ const Register: React.FC = () => {
       console.log(err);
       // setErrors(["Check your details once again"]);
       setRegistering(false);
+      toast.error("Unable to register user. Please try again later!");
       // navigate("/register");
     }
   };

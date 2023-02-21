@@ -24,4 +24,12 @@ export const SmallContainer = styled.div`
   p {
     text-align: center;
   }
+
+  h6 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 1rem 2rem;
+    border: ${({ theme }) => theme.borders.primary};
+    border-radius: 5px;
+  }
 `;

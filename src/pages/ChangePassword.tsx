@@ -18,6 +18,9 @@ import { confirmPasswords, passwordIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ColorRing } from "react-loader-spinner";
+import Spinner from "../components/Spinner";
+import { addError } from "../Redux/features/errorSlice";
+import { useDispatch } from "react-redux";
 
 interface Props {}
 
@@ -33,6 +36,7 @@ const ChangePassword: React.FC = () => {
   const [oobCode, setOobCode] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let params = queryString.parse(window.location.search);
@@ -88,6 +92,9 @@ const ChangePassword: React.FC = () => {
       confirmPasswordReset(auth, oobCode, password)
         .then(() => {
           // UPDATE STATE HERE
+          dispatch(
+            addError("Password has been changed successfuly, please login.")
+          );
           // ****************************
 
           setChanging(false);
@@ -123,36 +130,38 @@ const ChangePassword: React.FC = () => {
       <Content>
         <SmallContainer>
           {verifying ? (
-            <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
-            />
+            <Spinner />
           ) : (
+            // <ColorRing
+            //   visible={true}
+            //   height="80"
+            //   width="80"
+            //   ariaLabel="blocks-loading"
+            //   wrapperStyle={{}}
+            //   wrapperClass="blocks-wrapper"
+            //   colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
+            // />
             <>
               {verified ? (
                 <>
                   {changing ? (
-                    <ColorRing
-                      visible={true}
-                      height="80"
-                      width="80"
-                      ariaLabel="blocks-loading"
-                      wrapperStyle={{}}
-                      wrapperClass="blocks-wrapper"
-                      colors={[
-                        "#fc8e3e",
-                        "#0198BA",
-                        "#fc8e3e",
-                        "##0198BA",
-                        "#fc8e3e",
-                      ]}
-                    />
+                    <Spinner />
                   ) : (
+                    // <ColorRing
+                    //   visible={true}
+                    //   height="80"
+                    //   width="80"
+                    //   ariaLabel="blocks-loading"
+                    //   wrapperStyle={{}}
+                    //   wrapperClass="blocks-wrapper"
+                    //   colors={[
+                    //     "#fc8e3e",
+                    //     "#0198BA",
+                    //     "#fc8e3e",
+                    //     "##0198BA",
+                    //     "#fc8e3e",
+                    //   ]}
+                    // />
                     <>
                       <h2>Forgotten your password?</h2>
                       <h3>Enter a new password for your account</h3>
