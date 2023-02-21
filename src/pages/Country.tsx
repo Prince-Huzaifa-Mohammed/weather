@@ -29,6 +29,10 @@ import { emailIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { saveUserBio } from "../utils/localStorage";
+import { UserRes } from "../Interfaces/weather";
+import { addError } from "../Redux/features/errorSlice";
+import { useDispatch } from "react-redux";
+import Spinner from "../components/Spinner";
 
 const Country: React.FC = () => {
   const [country, setCountry] = useState("Ghana");
@@ -37,6 +41,7 @@ const Country: React.FC = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Collection Reference
   const colRef = collection(db, "users");
@@ -65,18 +70,23 @@ const Country: React.FC = () => {
         // Making the request to the database
         const userRefIfAny = await getDocs(q);
 
-        let res: object[] = [];
-        userRefIfAny.forEach((country) => {
-          res.push({
-            // id: country.id,
-            ...country.data(),
-          });
+        let userBio: UserRes = {};
+        userRefIfAny.forEach((ref) => {
+          userBio.name = ref.data().name;
+          userBio.country = ref.data().country;
+          userBio.email = ref.data().email;
         });
 
+        console.log(userBio);
+
         // If response contains a user object, we redirect the user to the login page cos an account exist
-        if (res.length > 0) {
+        if (Object.keys(userBio).length !== 0) {
           setAuthing(false);
           // Update state here with message to be used in toast
+          dispatch(
+            addError("An account with this email already exist. Please login")
+          );
+          // toast.error("An account with this email already exist. Please login");
           // ******
           navigate("/login");
         } else {
@@ -115,7 +125,7 @@ const Country: React.FC = () => {
           setAuthing(false);
 
           // We redirect to dashboard
-          navigate("/dashboard");
+          navigate("/");
         }
       }
     } catch (err) {
@@ -134,15 +144,7 @@ const Country: React.FC = () => {
       <Content>
         <SmallContainer>
           {authing ? (
-            <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
-            />
+            <Spinner />
           ) : (
             <>
               <h1>Please Select a Country</h1>

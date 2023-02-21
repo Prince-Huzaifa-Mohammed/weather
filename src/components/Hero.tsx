@@ -1,14 +1,9 @@
 import { CgCompress } from "react-icons/cg";
-import {
-  FaEye,
-  FaTemperatureLow,
-  FaThermometerFull,
-  FaWind,
-} from "react-icons/fa";
+import { FaEye, FaWind } from "react-icons/fa";
 import { GiSunrise, GiSunset } from "react-icons/gi";
 import { MdWaterDrop } from "react-icons/md";
 import { StyledHero } from "./styled/StyledHero";
-import { Conditions, WeatherData } from "../Interfaces/weather";
+import { WeatherData } from "../Interfaces/weather";
 import { fahrenheit } from "../utils/weather";
 
 const Hero = ({
@@ -79,7 +74,7 @@ const Hero = ({
                   <FaEye />
                   <p>Visibility</p>
                 </div>
-                <p>{weather?.visibility}</p>
+                <p>{weather?.visibility} m</p>
               </div>
 
               <div>

@@ -1,6 +1,5 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { ColorRing } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
 import { Shell } from "../components/styled/Shell";
@@ -27,6 +26,7 @@ import { RootState } from "../Redux/store";
 import { addWeatherData } from "../Redux/features/weatherSlice";
 import { addUser } from "../Redux/features/userSlice";
 import HourlyWeather from "../components/HourlyWeather";
+import Spinner from "../components/Spinner";
 
 const Dashboard: React.FC = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -36,16 +36,6 @@ const Dashboard: React.FC = () => {
   const [isCelcius, setIsCelcius] = useState(true);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-
-  // const conditions = {
-  //   Clouds: "cloudy.jpg",
-  //   Clear: "clear.jpg",
-  //   Sunny: "sunny.jpg",
-  //   Raining: "raining.jpg",
-  //   Cloudy: "cloudy.jpg",
-  //   Rainy: "raining.jpg",
-  //   Rain: "raining.jpg",
-  // };
 
   // Data required from redux to power user dashboard
   const weather = useSelector((state: RootState) => state.weather.value);
@@ -126,6 +116,7 @@ const Dashboard: React.FC = () => {
 
   // Carry out an Auth check as well as provide user's country data on page load
   useEffect(() => {
+    console.log("Hi!!!!!!!");
     setError("");
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -239,10 +230,10 @@ const Dashboard: React.FC = () => {
           <ShowDropDown>
             <DropDown>
               <div>
-                <Link to="/">
+                {/* <Link to="/">
                   <FaLock />
                   <span>Change Password</span>
-                </Link>
+                </Link> */}
                 <span onClick={logoutUser}>
                   <FaSignOutAlt />
                   <span>Logout</span>
@@ -257,41 +248,13 @@ const Dashboard: React.FC = () => {
         <MainSection>
           {loading && (
             <aside>
-              <ColorRing
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                colors={[
-                  "#fc8e3e",
-                  "#0198BA",
-                  "#fc8e3e",
-                  "##0198BA",
-                  "#fc8e3e",
-                ]}
-              />
+              <Spinner />
             </aside>
           )}
 
           {loggingOut && (
             <aside>
-              <ColorRing
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                colors={[
-                  "#fc8e3e",
-                  "#0198BA",
-                  "#fc8e3e",
-                  "##0198BA",
-                  "#fc8e3e",
-                ]}
-              />
+              <Spinner />
             </aside>
           )}
 

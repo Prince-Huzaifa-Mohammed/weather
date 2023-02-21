@@ -36,8 +36,11 @@ import {
 } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getUserBio, saveUserBio } from "../utils/localStorage";
+import { saveUserBio } from "../utils/localStorage";
 import { UserRes } from "../Interfaces/weather";
+import { addError } from "../Redux/features/errorSlice";
+import { useDispatch } from "react-redux";
+import Spinner from "../components/Spinner";
 
 const Register: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -48,6 +51,7 @@ const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const dispatch = useDispatch();
 
   // For Navigating to different pages
   const navigate = useNavigate();
@@ -113,6 +117,9 @@ const Register: React.FC = () => {
         // If user account already exist, we redirect user to login page
         if (Object.keys(userBio).length !== 0) {
           // Update state here with message
+          dispatch(
+            addError("An account with this email already exist. Please login")
+          );
           // ***************
           navigate("/login");
           setRegistering(false);
@@ -158,11 +165,11 @@ const Register: React.FC = () => {
           // ***** Fetch Weather data and update state
           // ************************
 
+          // We redirect to dashboard
+          navigate("/");
+
           // Ending the loading state
           setRegistering(false);
-
-          // We redirect to dashboard
-          navigate("/dashboard");
         }
       }
     } catch (err) {
@@ -181,17 +188,7 @@ const Register: React.FC = () => {
       <PrimaryBox></PrimaryBox>
       <Content>
         <SmallContainer>
-          {registering && (
-            <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
-            />
-          )}
+          {registering && <Spinner />}
 
           {!registering && (
             <>

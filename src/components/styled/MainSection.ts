@@ -19,10 +19,4 @@ export const MainSection = styled.main`
     margin-top: 5rem;
     font-weight: 400;
   }
-
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-
-  /* background-color: red; */
 `;

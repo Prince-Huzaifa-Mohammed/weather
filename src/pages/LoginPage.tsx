@@ -26,27 +26,28 @@ import {
 } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Image } from "../components/styled/Image";
-import { ColorRing } from "react-loader-spinner";
 import { saveUserBio } from "../utils/localStorage";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { UserRes } from "../Interfaces/weather";
-
-type User = {
-  // id: string;
-  name: string;
-  email: string;
-  country: string;
-  // timestamp: object;
-};
+import Spinner from "../components/Spinner";
+import { RootState } from "../Redux/store";
+import { removeError } from "../Redux/features/errorSlice";
 
 const LoginPage: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [signingIn, SetSigningIn] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    useSelector((state: RootState) => state.error.value)
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
+
+  if (error) {
+    toast.error(error);
+  }
+  dispatch(removeError());
+
   const navigate = useNavigate();
   const colRef = collection(db, "users");
 
@@ -97,10 +98,6 @@ const LoginPage: React.FC = () => {
           userBio.name = ref.data().name;
           userBio.country = ref.data().country;
           userBio.email = ref.data().email;
-          // res.push({
-          //   id: country.id,
-          //   ...country.data(),
-          // });
         });
 
         console.log(userBio);
@@ -111,15 +108,6 @@ const LoginPage: React.FC = () => {
 
           // Save user country to localstorage
           saveUserBio(userBio);
-
-          // const user = {
-          //   name: res[0].name,
-          //   email: res[0].email,
-          //   country: res[0].country,
-          //   id: res[0].id,
-          // };
-
-          // dispatch(addUser(user));
 
           console.log(userBio);
           navigate("/");
@@ -138,7 +126,7 @@ const LoginPage: React.FC = () => {
   // SIGN IN WITH GMAIL ************************************
 
   const signInWithGoogle = async () => {
-    SetSigningIn(true);
+    SetSigningIn(false);
     setError("");
 
     try {
@@ -158,23 +146,22 @@ const LoginPage: React.FC = () => {
         userBio.name = ref.data().name;
         userBio.country = ref.data().country;
         userBio.email = ref.data().email;
-        // res.push({
-        //   id: country.id,
-        //   ...country.data(),
-        // });
       });
 
+      console.log(userBio);
+
+      // Checking if userBio contains some data
       if (Object.keys(userBio).length !== 0) {
-        // Save users country to localstorage
+        // Save users data to localstorage
         saveUserBio(userBio);
 
         // Update state here ************************
 
         // ******************************************
-
+        console.log("See me!!!");
         //console.log(user);
-        navigate("/dashboard");
-        SetSigningIn(false);
+        SetSigningIn(true);
+        navigate("/");
       } else {
         await signOut(auth);
 
@@ -182,7 +169,6 @@ const LoginPage: React.FC = () => {
 
         // **************************************
         SetSigningIn(false);
-        console.log(user);
         navigate("/dashboard");
       }
     } catch (err) {
@@ -201,15 +187,7 @@ const LoginPage: React.FC = () => {
         </SecondaryBox>
         <PrimaryBox>
           <Content>
-            <ColorRing
-              visible={true}
-              height="80"
-              width="80"
-              ariaLabel="blocks-loading"
-              wrapperStyle={{}}
-              wrapperClass="blocks-wrapper"
-              colors={["#fc8e3e", "#0198BA", "#fc8e3e", "##0198BA", "#fc8e3e"]}
-            />
+            <Spinner />
           </Content>
         </PrimaryBox>
       </Shell>
