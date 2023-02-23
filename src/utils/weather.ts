@@ -76,7 +76,7 @@ export const getFormattedData = (
 };
 
 export const isValidCountry = (data: CountryData) => {
-  console.log(data);
+  // console.log(data);
   if (
     data.sys.country === "GH" ||
     data.sys.country === "RW" ||

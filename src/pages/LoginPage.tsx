@@ -44,17 +44,6 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  // let error = useSelector((state: RootState) => state.error.value);
-  // toast.error(error);
-  // toast.error(error);
-  // if (error) {
-  //   console.log(error);
-  //   // toast.error(error);
-  //   // setError("");
-  //   // dispatch(removeError());
-  // }
-  // error = "";
-
   const navigate = useNavigate();
   const colRef = collection(db, "users");
 
@@ -93,7 +82,7 @@ const LoginPage: React.FC = () => {
           password
         );
         const user = credentials.user;
-        console.log(user);
+        // console.log(user);
 
         // Constructing the query to get user info from the database
 
@@ -110,7 +99,7 @@ const LoginPage: React.FC = () => {
           userBio.email = ref.data().email;
         });
 
-        console.log(userBio);
+        // console.log(userBio);
 
         if (Object.keys(userBio).length !== 0) {
           // Update state here with message to be used in toast
@@ -119,7 +108,8 @@ const LoginPage: React.FC = () => {
           // Save user country to localstorage
           saveUserBio(userBio);
 
-          console.log(userBio);
+          // console.log(userBio);
+
           navigate("/");
           SetSigningIn(false);
         } else {
@@ -127,7 +117,7 @@ const LoginPage: React.FC = () => {
           SetSigningIn(false);
         }
       } catch (err) {
-        toast.error("Please try again later!");
+        toast.error("Invalid credentials");
         SetSigningIn(false);
       }
     }
@@ -161,7 +151,7 @@ const LoginPage: React.FC = () => {
         userBio.email = ref.data().email;
       });
 
-      console.log(userBio);
+      // console.log(userBio);
 
       // Checking if userBio contains some data
       if (Object.keys(userBio).length !== 0) {
@@ -171,8 +161,9 @@ const LoginPage: React.FC = () => {
         // Update state here ************************
 
         // ******************************************
-        console.log("See me!!!");
+
         //console.log(user);
+
         SetSigningIn(true);
         navigate("/");
       } else {
@@ -182,7 +173,7 @@ const LoginPage: React.FC = () => {
 
         // **************************************
         SetSigningIn(false);
-        navigate("/dashboard");
+        navigate("/");
       }
     } catch (err) {
       SetSigningIn(false);

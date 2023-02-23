@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ColorRing } from "react-loader-spinner";
 import MainLogo from "../components/MainLogo";
 import { Content } from "../components/styled/Content";
 import { InputGroup } from "../components/styled/InputGroup";
@@ -38,7 +37,7 @@ const Country: React.FC = () => {
   const [country, setCountry] = useState("Ghana");
   const [email, setEmail] = useState("");
   const [authing, setAuthing] = useState(false);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -77,7 +76,7 @@ const Country: React.FC = () => {
           userBio.email = ref.data().email;
         });
 
-        console.log(userBio);
+        // console.log(userBio);
 
         // If response contains a user object, we redirect the user to the login page cos an account exist
         if (Object.keys(userBio).length !== 0) {
@@ -129,7 +128,7 @@ const Country: React.FC = () => {
         }
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       // setError("Please sign up with a valid google account");
       toast.error("Provide a valid google account!");
     }

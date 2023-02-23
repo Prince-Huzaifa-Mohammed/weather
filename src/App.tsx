@@ -9,8 +9,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import Dashboard from "./pages/Dashboard";
-// import { initializeApp } from "firebase/app";
-// import { config } from "./config/config";
 import Auth from "./components/Auth/Auth";
 import Country from "./pages/Country";
 

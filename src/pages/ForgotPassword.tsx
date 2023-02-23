@@ -1,8 +1,6 @@
 import MainLogo from "../components/MainLogo";
 import { Button } from "../components/styled/Button";
 import { Content } from "../components/styled/Content";
-import { Flex } from "../components/styled/Flex";
-import { Image } from "../components/styled/Image";
 import { InputField } from "../components/styled/InputField";
 import { InputGroup } from "../components/styled/InputGroup";
 import { Label } from "../components/styled/Label";

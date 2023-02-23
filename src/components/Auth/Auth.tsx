@@ -16,11 +16,11 @@ const Auth: React.FC<Props> = (props) => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
+        // console.log(user);
         navigate("/dashboard");
         setLoading(false);
       } else {
-        console.log(user);
+        // console.log(user);
         setLoading(false);
         // navigate("/");
       }

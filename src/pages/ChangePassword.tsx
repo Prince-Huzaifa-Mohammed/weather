@@ -17,12 +17,9 @@ import { auth } from "../config/firebase";
 import { confirmPasswords, passwordIsValid } from "../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ColorRing } from "react-loader-spinner";
 import Spinner from "../components/Spinner";
 import { addError } from "../Redux/features/errorSlice";
 import { useDispatch } from "react-redux";
-
-interface Props {}
 
 const ChangePassword: React.FC = () => {
   const [visibleNew, setVisibleNew] = useState(false);
@@ -60,13 +57,13 @@ const ChangePassword: React.FC = () => {
   const verifyPasswordResetLink = (code: string) => {
     verifyPasswordResetCode(auth, code)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         setOobCode(code);
         setVerified(true);
         setVerifying(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setVerified(false);
         setVerifying(false);
       });

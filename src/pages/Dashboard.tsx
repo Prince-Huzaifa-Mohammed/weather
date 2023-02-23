@@ -7,7 +7,7 @@ import MainLogo from "../components/MainLogo";
 import { StyledHeader } from "../components/styled/Header";
 import { StyledCelcius } from "../components/styled/StyledCelcius";
 import { ContainerBox } from "../components/styled/ContainerBox";
-import { FaSearch, FaAngleDown, FaSignOutAlt, FaLock } from "react-icons/fa";
+import { FaSearch, FaAngleDown, FaSignOutAlt } from "react-icons/fa";
 import { DropDown } from "../components/styled/DropDown";
 import { ShowDropDown } from "../components/styled/ShowDropDown";
 import { MainSection } from "../components/styled/MainSection";
@@ -64,7 +64,7 @@ const Dashboard: React.FC = () => {
     if (trimedInputData === "") {
       setLoading(false);
       return setError(
-        "Please provide a valid location! Search field cannot be empty!"
+        "Please provide a valid location. Search field cannot be empty!"
       );
     } else {
       try {
@@ -100,14 +100,14 @@ const Dashboard: React.FC = () => {
 
           // Transform huge data set to only data that is needed to power the page
           const formattedData = getFormattedData(data.list[0], weatherData);
-          console.log(formattedData);
+          // console.log(formattedData);
 
           // Save data to state to trigger rerender
           dispatch(addWeatherData(formattedData));
           setLoading(false);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         setError("Something went wrong. Please try again later!");
         setLoading(false);
       }
@@ -116,14 +116,13 @@ const Dashboard: React.FC = () => {
 
   // Carry out an Auth check as well as provide user's country data on page load
   useEffect(() => {
-    console.log("Hi!!!!!!!");
     setError("");
     setLoading(true);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // Get user country from localstorage
         const userBio = getUserBio();
-        console.log(userBio);
+        // console.log(userBio);
 
         // Fetch weather data to power users dashboards
         const apiCall = async (location: string) => {
@@ -134,14 +133,15 @@ const Dashboard: React.FC = () => {
             const weatherData = await getWeatherData(longitude, latitude);
 
             const formattedData = getFormattedData(data.list[0], weatherData);
-            console.log(formattedData);
+            // console.log(formattedData);
+
             // Update state with weather data
             dispatch(addWeatherData(formattedData));
             dispatch(addUser(userBio));
 
             setLoading(false);
           } catch (err) {
-            console.log(err);
+            // console.log(err);
             setError("Something went wrong. Please try again later!");
             setLoading(false);
           }
@@ -173,56 +173,61 @@ const Dashboard: React.FC = () => {
     <Shell>
       <ContainerBox>
         <MainLogo />
-        <StyledHeader>
-          <div>
-            <div>
-              {isCelcius ? (
-                <>
-                  <StyledCelcius>
-                    <span>&deg; C</span>
-                  </StyledCelcius>
-                  <span onClick={toggleCelcuis}>&deg; F</span>
-                </>
-              ) : (
-                <>
-                  <span onClick={toggleCelcuis}>&deg; C</span>
-                  <StyledCelcius>
-                    <span>&deg; F</span>
-                  </StyledCelcius>
-                </>
-              )}
-            </div>
-          </div>
 
-          <div>
-            <form onSubmit={getGeoWeather}>
+        {!loading && (
+          <StyledHeader>
+            <>
               <div>
-                <input
-                  type="text"
-                  placeholder="Example Germany or Kigali, Rwanda"
-                  value={inputData}
-                  onChange={(e) => setInputData(e.target.value)}
-                />
-                <button>
-                  <span>
-                    <FaSearch color="white" />
-                  </span>
-                  <span>Search</span>
-                </button>
+                <div>
+                  {isCelcius ? (
+                    <>
+                      <StyledCelcius>
+                        <span>&deg; C</span>
+                      </StyledCelcius>
+                      <span onClick={toggleCelcuis}>&deg; F</span>
+                    </>
+                  ) : (
+                    <>
+                      <span onClick={toggleCelcuis}>&deg; C</span>
+                      <StyledCelcius>
+                        <span>&deg; F</span>
+                      </StyledCelcius>
+                    </>
+                  )}
+                </div>
               </div>
-            </form>
-          </div>
 
-          <div>
-            <div>
-              <img src={`./assets/${user?.country}.svg`} alt="" />
-              <h2>{user?.name[0]}</h2>
-              <span onClick={toggleDropDown}>
-                <FaAngleDown />
-              </span>
-            </div>
-          </div>
-        </StyledHeader>
+              <div>
+                <form onSubmit={getGeoWeather}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Example Germany or Kigali, Rwanda"
+                      value={inputData}
+                      onChange={(e) => setInputData(e.target.value)}
+                    />
+                    <button>
+                      <span>
+                        <FaSearch color="white" />
+                      </span>
+                      <span>Search</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <div>
+                  <img src={`./assets/${user?.country}.svg`} alt="" />
+                  <h2>{user?.name[0]}</h2>
+                  <span onClick={toggleDropDown}>
+                    <FaAngleDown />
+                  </span>
+                </div>
+              </div>
+            </>
+          </StyledHeader>
+        )}
 
         {/* Modal */}
 

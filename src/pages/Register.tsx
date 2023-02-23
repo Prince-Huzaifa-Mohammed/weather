@@ -49,7 +49,7 @@ const Register: React.FC = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<string[]>([]);
+  // const [errors, setErrors] = useState<string[]>([]);
   const dispatch = useDispatch();
 
   // For Navigating to different pages
@@ -69,7 +69,7 @@ const Register: React.FC = () => {
   // Function to register a new user using email and password. Also saves user in database
   const registerUser = async () => {
     try {
-      setErrors([]);
+      // setErrors([]);
       setRegistering(false);
 
       let validationErrors: string[] = [];
@@ -172,7 +172,7 @@ const Register: React.FC = () => {
         }
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       // setErrors(["Check your details once again"]);
       setRegistering(false);
       toast.error("Unable to register user. Please try again later!");
