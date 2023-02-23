@@ -15,7 +15,6 @@ import Country from "./pages/Country";
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles />
       <Router>
         <Routes>
           <Route
@@ -77,6 +76,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
+      <GlobalStyles />
     </ThemeProvider>
   );
 };
